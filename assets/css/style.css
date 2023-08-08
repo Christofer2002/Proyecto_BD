@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;900&family=Staatliches&display=swap');
+
+:root {
+    --fuente-principal: 'Raleway', sans-serif;
+    --fuente-heading: 'Staatliches', cursive;
+
+    --blanco: #fff;
+}
+
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: var(--fuente-principal);
+    font-weight: 300;
+    line-height: 1.42em;
+    color: #A7A1AE;
+    background-color: #1F2739 !important;
+}
+
+
+
+h1 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1em;
+    text-align: center;
+}
+
+h2 {
+    font-size: 1rem;
+    font-weight: 300;
+    text-align: center;
+    display: block;
+    line-height: 1em;
+    padding-bottom: 2em;
+}
+
+h2 a {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #FB667A;
+    text-decoration: none;
+}
+
+.blue {
+    color: #185875;
+}
+
+.yellow {
+    color: #FFF842;
+}
+
+
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    text-align: center;
+}
+
+/* Customize the label (the checkbox-btn) */
+.checkbox-btn {
+    display: block;
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.checkbox-btn input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkbox-btn label {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border: 2.5px solid #ada0a0;
+    transition: .2s linear;
+}
+
+.checkbox-btn input:checked~.checkmark {
+    background-color: transparent;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    left: 50%;
+    top: 40%;
+    width: 10px;
+    height: 14px;
+    border: 2px solid #0ea021;
+    filter: drop-shadow(0px 0px 10px #0ea021);
+    border-width: 0 2.5px 2.5px 0;
+    transition: .2s linear;
+    transform: translate(-50%, -50%) rotate(-90deg) scale(0.2);
+}
+
+/* Show the checkmark when checked */
+.checkbox-btn input:checked~.checkmark:after {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    animation: pulse 1s ease-in;
+}
+
+.checkbox-btn input:checked~.checkmark {
+    transform: rotate(45deg);
+    border: none;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1.6);
+    }
+}
+
+.contenedor {
+    display: block;
+    width: 60%;
+
+}
+
+.cta {
+    border: none;
+    background: none;
+    display: flex;
+    cursor: pointer;
+}
+
+.cta span {
+    padding-bottom: 7px;
+    letter-spacing: 4px;
+    font-size: 14px;
+    padding-right: 15px;
+    text-transform: uppercase;
+    color: var(--blanco);
+}
+
+.cta svg {
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
+}
+
+.cta:hover svg {
+    transform: translateX(0);
+}
+
+.cta:active svg {
+    transform: scale(0.9);
+}
+
+.hover-underline-animation {
+    position: relative;
+    color: var(--blanco);
+    padding-bottom: 20px;
+}
+
+.hover-underline-animation:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--blanco);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.cta:hover .hover-underline-animation:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+
+}
+
+.container-preguntas th h1 {
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.container-preguntas td {
+    font-weight: normal;
+    font-size: 1em;
+    -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+    -moz-box-shadow: 0 2px 2px -2px #0E1119;
+    box-shadow: 0 2px 2px -2px #0E1119;
+}
+
+.container-preguntas {
+    text-align: left;
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
+    display: table;
+    padding: 0 0 1.3rem 0;
+}
+
+.container-preguntas td,
+.container-preguntas th {
+    padding-bottom: 3%;
+    padding-top: 3%;
+    padding-left: 2%;
+}
+
+/* Background-color of the odd rows */
+.container-preguntas tr:nth-child(odd) {
+    background-color: #323C50;
+}
+
+/* Background-color of the even rows */
+.container-preguntas tr:nth-child(even) {
+    background-color: #2C3446;
+}
+
+.container-preguntas th {
+    background-color: #1F2739;
+}
+
+.container-preguntas tr:hover {
+    background-color: #464A52;
+    -webkit-box-shadow: 0 6px 6px -6px #0E1119;
+    -moz-box-shadow: 0 6px 6px -6px #0E1119;
+    box-shadow: 0 6px 6px -6px #0E1119;
+}
+
+.container-preguntas td:hover {
+    font-weight: bold;
+    transform: translate3d(6px, -6px, 0);
+    transition-delay: 0s;
+    transition-duration: 0.4s;
+    transition-property: all;
+    transition-timing-function: line;
+}
+
+@media (max-width: 800px) {
+
+    .container-preguntas td:nth-child(4),
+    .container-preguntas th:nth-child(4) {
+        display: none;
+    }
+}
+
+.mt-auto {
+    margin-top: auto !important
+}
+
+
+.semaforo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    gap: .4rem;
+    margin: 5rem auto;
+    border: 1px solid #fff;
+}
+
+.luz {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: 5px;
+}
+
+.luz-roja {
+    background-color: red;
+}
+
+.luz-amarilla {
+    background-color: yellow;
+}
+
+.luz-verde {
+    background-color: green;
+}
+
+.table-container {
+    max-height: 350px; /* Cambia esto al valor deseado */
+    overflow-y: auto;
+    margin-bottom: 2rem;
+}
+
+.container-preguntas th {
+    position: sticky;
+    top: 0;
+    z-index: 1; /* Asegura que el encabezado esté por encima del contenido desplazado */
+}
+
