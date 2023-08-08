@@ -13,8 +13,6 @@ $query = "SELECT *, cu.id AS cuestionario_id
 $result = $mysqli->query($query);
 
 
-
-
 // Crear un array para almacenar las preguntas
 $cuestionario = array();
 
@@ -42,6 +40,7 @@ $mysqli->close();
     <!-- Agregar el enlace al archivo CSS de Bootstrap -->
     <link href="../assets/css/normalize.css" rel="stylesheet">
     <link href="../assets/css/style.css" rel="stylesheet">
+    <script src="../assets/js/cuestionary.js"></script>
     <title>Cuestionary</title>
     <link href="../assets/img/cuestionary_icon.png" type="png" rel="website icon">
 </head>
@@ -77,17 +76,17 @@ $mysqli->close();
                                 <td><?php echo $pregunta['pregunta']; ?></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" name="pregunta_<?php echo $pregunta['id']; ?>_s">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" name="pregunta_<?php echo $pregunta['id']; ?>_s">
                                         <span class="checkmark"></span>
                                     </label></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" name="pregunta_<?php echo $pregunta['id']; ?>_n">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" name="pregunta_<?php echo $pregunta['id']; ?>_n">
                                         <span class="checkmark"></span>
                                     </label></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" name="pregunta_<?php echo $pregunta['id']; ?>_na">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" name="pregunta_<?php echo $pregunta['id']; ?>_na">
                                         <span class="checkmark"></span>
                                     </label></td>
                             </tr>
