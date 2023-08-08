@@ -6,10 +6,14 @@ require_once '../config/config.php';
 $message = '';
 
 // Realizar la consulta SELECT para obtener todas las preguntas de la tabla "cuestionario"
-$query = "SELECT c.*, co.id AS contenido_id
-            FROM contenido co
-            INNER JOIN cuestionario c ON co.id_cuestionario = c.id;";
+
+$query = "SELECT *, cu.id AS cuestionario_id
+            FROM cuestionario cu
+            INNER JOIN contenido c ON cu.contenidoC = c.id;";
 $result = $mysqli->query($query);
+
+
+
 
 // Crear un array para almacenar las preguntas
 $cuestionario = array();
