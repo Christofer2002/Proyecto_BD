@@ -64,55 +64,58 @@ CREATE TABLE IF NOT EXISTS `cuestionario` (
 --
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(5, 'El administrador de bases de datos realiza respaldos periódicamente de la base de datos?', 5);
+(5, 'Database administrator does database backups frequently', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(6, '¿El administrador de bases de datos realiza respaldos periódicamente del sistema operativo que soporta la base de datos?', 5);
+(6, 'Database administrator frequently backups the operating system which the databases are running on', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(7, '¿El administrador de bases de datos revisa y prueba periódicamente los respaldos anteriormente mencionados?', 5);
+(7, 'Database administrator checks and tests on a daily basis all the backups related to the databases (e.g: Operating system and databases backups)', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(8, '¿El administrador de bases de datos monitorea constantemente y de manera perpetua las bases de datos?', 5);
+(8, 'Database administrator looks at database indicators regularly', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(9, '¿El administrador de bases de datos afina y optimiza las estructuras de almacenamientos, memoria y procesamiento que soportan la base de datos?', 5);
+(9, 'Database administrator changes and optimizes data structures, memory and processing supported by the database according to different indicators.', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(10, '¿El administrador de bases de datos mantiene la plataforma tecnológica en la que se ejecutan las bases de datos en espacios seguros, con mecanismos de climatización y acceso físicos, ya sea que se ubique en instalaciones propias o en la nube?', 5);
+(10, 'Database administrator keeps all the hardware the database is running on in a secure, climatized and restricted place', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(11, '¿El administrador de bases de datos mantiene copias de los respaldos en distintas ubicaciones físicas, ya sean locales o en la nube?', 5);
+(11, 'Database administrator keeps backups in separated places, including local places or the cloud', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(12, '¿El administrador de bases de datos establece e implementa mecanismos de replicación que reduzcan la pérdida de datos, como puede ser la replicaciones de bases de datos en un sitio alterno?', 5);
+(12, 'Database administrator designs and implements replication mechanisms in order to reduce data loss. E.g. Database replications in another site.', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(13, '¿El administrador de bases de datos establece e implementa mecanismos que reduzcan los tiempos de recuperación, por ejemplo virtualización, compartimientos y respaldos nativos?', 5);
+(13, 'Database administrator establishes and implements  mechanisms to reduce restoring time such as virtualization, docking or native backups', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(14, '¿Existe documentación completa de las bases de datos?', 5);
+(14, 'Full database documentation exists', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(15, '¿Existen manuales completos para realizar todos los procesos relacionados a la administración de bases de datos?', 5);
+(15, 'There are complete manuals to do all the tasks related to database administration.', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(16, '¿Existen planes de contingencia para aquellos riesgos que puedan afectar a las bases de datos?', 5);
+(16, 'Plans for reducing the impact of any database related risk exists.', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(17, '¿Todas las partes involucradas en la gestión de bases de datos han sido debidamente instruidas con los planes de contingencia?', 5);
+(17, 'Every member of the database management department is correctly trained with contingency plans', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(18, '¿Existen procesos para revisar la continuidad del servicio de las bases de datos posteriormente a un incidente?', 5);
+(18, 'A process to check database continuity after an incident exists', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(19, '¿Se realizan auditorías periódicas para evaluar la eficacia de los controles en la gestión de bases de datos?¿La gestión de bases de datos cumple con las regulaciones y normativas relevantes?', 5);
+(19, 'Database management processes are periodically under review in order to improve effectiveness.', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(20, '¿Se revisan y actualizan regularmente los procedimientos y controles de gestión de bases de datos?', 5);
+(20, 'Database management procedures and controls are regularly reviewed and updated', 5);
 
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
-(21, '¿Se implementan mejoras basadas en las lecciones aprendidas de incidentes anteriores?', 5);
+(21, 'Upgrades based on previous eventualities are implemented.', 5);
+
+INSERT INTO `cuestionar`(`id`,`pregunta`,`contenidoC`) VALUES
+(22,`Database management processes are compliant with the law, current regulations and normatives.`,5);
 
 --
 /*Plantilla de sentencia SQL para seguir insertando preguntas, no borrar*/
