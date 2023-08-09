@@ -114,8 +114,8 @@ INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
 INSERT INTO `cuestionario` (`id`, `pregunta`, `contenidoC`) VALUES
 (21, 'Upgrades based on previous eventualities are implemented.', 5);
 
-INSERT INTO `cuestionar`(`id`,`pregunta`,`contenidoC`) VALUES
-(22,`Database management processes are compliant with the law, current regulations and normatives.`,5);
+INSERT INTO `cuestionario`(`id`,`pregunta`,`contenidoC`) VALUES
+(22,'Database management processes are compliant with the law, current regulations and normatives.',5);
 
 --
 /*Plantilla de sentencia SQL para seguir insertando preguntas, no borrar*/
