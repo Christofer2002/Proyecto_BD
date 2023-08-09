@@ -1,19 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
-    uncheck();
-});
-
-
-
-// CREO QUE HAY QUE CAMBIAR LA ESTRUCTURA
-
+//---------- DEFINICION DE VARIABLES
 var porcentaje;
 
+//---------- LISTENERS
+document.addEventListener('DOMContentLoaded', () => { //importante esta seccion para que todos los listener funcione
+    uncheck();
+    attachListener();
+});
 
-/**
- * The function uncheck() is used to uncheck all checkboxes in a group when one checkbox in the group
- * is checked.
- */
-function uncheck(){
+//---------- FUNCIONES
+
+function uncheck(){ //Usada para hacer funcionar los checkboxes como radio buttons
     const rows = document.querySelectorAll('tr'); // Obtener todas las filas
     rows.forEach(row => {
         const checkboxGroups = row.querySelectorAll('.checkbox-group');
@@ -30,12 +26,7 @@ function uncheck(){
         });
     });
 }
-
-
-
-
-
-// ESTO NO ESTÁ TERMINADO, PERO LA IDEA AQUI ES TOMAR LOS AFIRMATIVOS Y HACER LA DIVISION ENTRE TODOS LOS CHECKBOX
+//-------------------------------
 function evaluate (){
     var questions;
     var affirmativeQuestion = 0;
@@ -59,12 +50,7 @@ function evaluate (){
     this.porcentaje = (affirmativeQuestion*100)/questions;
     changeColorSemaphore(porcentaje)
 }
-
-
-
-
-
-
+//-------------------------------
 function changeColorSemaphore(){
 
     console.log(1 >= 50 && this.porcentaje < 100);
@@ -86,5 +72,11 @@ function changeColorSemaphore(){
         luzVerde.style.backgroundColor = 'green';
     }
 }
-
-
+//-------------------------------
+function attachListener(){
+    const evaluateButton = document.querySelector('#evaluateButton');
+    evaluateButton.addEventListener('click', () => {
+        changeColorSemaphore(this.evaluate());
+    });
+}
+//------------------------------- END OF SCRIPT

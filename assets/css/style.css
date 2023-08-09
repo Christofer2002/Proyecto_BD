@@ -238,7 +238,9 @@ h2 a {
 .container-preguntas th {
     padding-bottom: 3%;
     padding-top: 3%;
-    padding-left: 2%;
+    /*padding-left: 2%; Se cambio este padding para evitar un corrimiento de los elementos de la tabla
+    que se producia debido a los enunciados de las preguntas.*/
+    padding-left: 0.5%
 }
 
 /* Background-color of the odd rows */
