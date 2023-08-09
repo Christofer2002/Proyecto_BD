@@ -39,12 +39,11 @@ function uncheck(){
 
 
 
-// ESTO NO ESTÁ TERMINADO
+// ESTO NO ESTÁ TERMINADO, PERO LA IDEA AQUI ES TOMAR LOS AFIRMATIVOS Y HACER LA DIVISION ENTRE TODOS LOS CHECKBOX
 function evaluate (){
-    const AffirmativechecklistItems = document.querySelectorAll('td.column-S input[type="checkbox"]');
+    const AffirmativechecklistItems = document.querySelectorAll('');
     const totalCheckboxes = document.querySelectorAll('tr');
-    
-    return (checkedCount / totalCheckboxes) * 100;
+    return ( AffirmativechecklistItems/ totalCheckboxes) * 100;
 }
 
 
