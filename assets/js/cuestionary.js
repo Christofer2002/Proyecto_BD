@@ -2,6 +2,8 @@
 var porcentaje;
 
 //---------- LISTENERS
+
+
 document.addEventListener('DOMContentLoaded', () => { //importante esta seccion para que todos los listener funcione
     uncheck();
     attachListener();
@@ -9,8 +11,13 @@ document.addEventListener('DOMContentLoaded', () => { //importante esta seccion 
 
 //---------- FUNCIONES
 
-function uncheck(){ //Usada para hacer funcionar los checkboxes como radio buttons
-    const rows = document.querySelectorAll('tr'); // Obtener todas las filas
+
+/**
+ * The function "uncheck" is used to uncheck other checkboxes in the same row when one checkbox is
+ * checked.
+ */
+function uncheck(){ 
+    const rows = document.querySelectorAll('tr'); 
     rows.forEach(row => {
         const checkboxGroups = row.querySelectorAll('.checkbox-group');
         checkboxGroups.forEach(group => {
@@ -27,6 +34,10 @@ function uncheck(){ //Usada para hacer funcionar los checkboxes como radio butto
     });
 }
 //-------------------------------
+/**
+ * The function evaluates the responses to a set of questions and calculates the percentage of
+ * affirmative answers.
+ */
 function evaluate (){
     var questions;
     var affirmativeQuestion = 0;
@@ -51,6 +62,10 @@ function evaluate (){
     changeColorSemaphore(porcentaje)
 }
 //-------------------------------
+
+/**
+ * The function changes the color of a semaphore based on a given percentage value.
+ */
 function changeColorSemaphore(){
 
     console.log(1 >= 50 && this.porcentaje < 100);
@@ -73,6 +88,10 @@ function changeColorSemaphore(){
     }
 }
 //-------------------------------
+/**
+ * The function attaches a click event listener to a button and calls the evaluate function when the
+ * button is clicked.
+ */
 function attachListener(){
     const evaluateButton = document.querySelector('#evaluateButton');
     evaluateButton.addEventListener('click', () => {
