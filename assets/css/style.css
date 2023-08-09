@@ -234,6 +234,10 @@ h2 a {
     padding: 0 0 1.3rem 0;
 }
 
+.td-preguntas{
+    width: 65%;
+}
+
 .container-preguntas td,
 .container-preguntas th {
     padding-bottom: 3%;
@@ -319,7 +323,7 @@ h2 a {
 .table-container {
     max-height: 350px; /* Cambia esto al valor deseado */
     overflow-y: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .container-preguntas th {

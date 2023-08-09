@@ -73,7 +73,7 @@ $mysqli->close();
                         foreach ($cuestionario as $pregunta) {
                         ?>
                             <tr>
-                                <td><?php echo $pregunta['pregunta']; ?></td>
+                                <td class="td-preguntas"><?php echo $pregunta['pregunta']; ?></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
                                         <input id="checkbox" type="checkbox" class="checkbox-group" value= "YES" name="pregunta_<?php echo $pregunta['id']; ?>_s">
