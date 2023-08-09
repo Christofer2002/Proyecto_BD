@@ -41,9 +41,22 @@ function uncheck(){
 
 // ESTO NO ESTÁ TERMINADO, PERO LA IDEA AQUI ES TOMAR LOS AFIRMATIVOS Y HACER LA DIVISION ENTRE TODOS LOS CHECKBOX
 function evaluate (){
-    const AffirmativechecklistItems = document.querySelectorAll('');
-    const totalCheckboxes = document.querySelectorAll('tr');
-    return ( AffirmativechecklistItems/ totalCheckboxes) * 100;
+    var questions;
+    var affirmativeQuestion = 0;
+
+    const rows = document.querySelectorAll('tr'); // Obtener todas las filas
+    questions = rows.length;
+    rows.forEach(row => {
+        const checkboxGroups = row.querySelectorAll('.checkbox-group');
+        checkboxGroups.forEach(group => {
+            if (this.checked){
+                if(this.value === "YES" ){
+                    affirmativeQuestion = affirmativeQuestion + 1;
+                }
+            }
+        });
+    });
+    console.log(affirmativeQuestion);
 }
 
 
