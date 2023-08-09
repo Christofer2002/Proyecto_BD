@@ -81,12 +81,12 @@ $mysqli->close();
                                     </label></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" name="pregunta_<?php echo $pregunta['id']; ?>_n">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" value = "NO" name="pregunta_<?php echo $pregunta['id']; ?>_n">
                                         <span class="checkmark"></span>
                                     </label></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" name="pregunta_<?php echo $pregunta['id']; ?>_na">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="N/A" name="pregunta_<?php echo $pregunta['id']; ?>_na">
                                         <span class="checkmark"></span>
                                     </label></td>
                             </tr>
@@ -102,12 +102,18 @@ $mysqli->close();
                     <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" data-name="Path 10" id="Path_10"></path>
                 </svg>
             </button>
+            <script>
+                const evaluateButton = document.querySelector('#evaluateButton');
+                evaluateButton.addEventListener('click', () => {
+                    changeColorSemaphore(evaluate());
+                });
+            </script>
 
         </div>
         <div class="semaforo">
-            <div class="luz luz-roja"></div>
-            <div class="luz luz-amarilla"></div>
-            <div class="luz luz-verde"></div>
+            <div class="luz-roja"></div>
+            <div class="luz-amarilla"></div>
+            <div class="luz-verde"></div>
         </div>
     </div>
 

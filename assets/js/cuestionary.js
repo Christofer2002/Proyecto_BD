@@ -5,12 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // CREO QUE HAY QUE CAMBIAR LA ESTRUCTURA
-const evaluateButton = document.getElementById('evaluateButton');
 
-evaluateButton.addEventListener('click', () => {
-    changeColorSemaphore(evaluate());
-});
-
+var porcentaje;
 
 
 /**
@@ -43,41 +39,44 @@ function uncheck(){
 function evaluate (){
     var questions;
     var affirmativeQuestion = 0;
+    var naQuestion = 0;
 
     const rows = document.querySelectorAll('tr'); // Obtener todas las filas
-    questions = rows.length;
+    questions = rows.length - 1;
     rows.forEach(row => {
         const checkboxGroups = row.querySelectorAll('.checkbox-group');
-        checkboxGroups.forEach(group => {
-            if (this.checked){
-                if(this.value === "YES" ){
+        checkboxGroups.forEach(cheackB => {
+            if (cheackB.checked){
+                if(cheackB.value === "YES" ){
                     affirmativeQuestion = affirmativeQuestion + 1;
+                }else if(cheackB.value === "N/A"){
+                    naQuestion = naQuestion + 1;
                 }
             }
         });
     });
-    console.log(affirmativeQuestion);
+    questions = questions - naQuestion;
+    this.porcentaje = (affirmativeQuestion*100)/questions;
+    changeColorSemaphore(porcentaje)
 }
 
 
 
 
-/**
- * The function changes the color of a semaphore based on a given percentage.
- * @param percentage - The `percentage` parameter represents the percentage value that determines the
- * color of the semaphore lights.
- */
 
-function changeColorSemaphore(percentage){
-    const luzRoja = document.querySelector('.luz luz-roja');
-    const luzAmarilla = document.querySelector('.luz luz-amarilla');
-    const luzVerde = document.querySelector('.luz luz-verde');
 
-    if (percentage < 50) {
+function changeColorSemaphore(){
+
+    console.log(1 >= 50 && this.porcentaje < 100);
+
+    const luzRoja = document.querySelector('.luz-roja');
+    const luzAmarilla = document.querySelector('.luz-amarilla');
+    const luzVerde = document.querySelector('.luz-verde');
+    if (this.porcentaje < 50) {
         luzRoja.style.backgroundColor = 'red';
         luzAmarilla.style.backgroundColor = 'gray';
         luzVerde.style.backgroundColor = 'gray';
-    } else if (percentage >= 50 && percentage <= 80) {
+    } else if (this.porcentaje >= 50 && this.porcentaje < 100) {
         luzRoja.style.backgroundColor = 'gray';
         luzAmarilla.style.backgroundColor = 'yellow';
         luzVerde.style.backgroundColor = 'gray';

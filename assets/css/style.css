@@ -295,7 +295,7 @@ h2 a {
     border: 1px solid #fff;
 }
 
-.luz {
+.luz-roja, .luz-amarilla, .luz-verde{
     width: 40px;
     height: 40px;
     border-radius: 50%;
