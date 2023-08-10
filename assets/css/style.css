@@ -291,6 +291,12 @@ h2 a {
 }
 
 
+.semaforo-info{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    margin: 0 auto;
+}
+
 .semaforo {
     display: flex;
     flex-direction: column;
@@ -298,7 +304,8 @@ h2 a {
     justify-content: center;
     margin: 0 auto;
     gap: .4rem;
-    margin: 15rem auto;
+    margin-top: 13rem;
+    margin-bottom: 1rem;
     border: 1px solid #fff;
 }
 
@@ -336,4 +343,9 @@ h2 a {
 .container-preguntas th:first-child,
 .container-preguntas td:first-child {
     padding-left: 15px;
+}
+
+#percentageDisplay {
+    font-size: 1.3rem;
+    font-weight: bold;
 }

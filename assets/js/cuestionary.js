@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => { //importante esta seccion 
  * The function "uncheck" is used to uncheck other checkboxes in the same row when one checkbox is
  * checked.
  */
-function uncheck(){ 
-    const rows = document.querySelectorAll('tr'); 
+function uncheck() {
+    const rows = document.querySelectorAll('tr');
     rows.forEach(row => {
         const checkboxGroups = row.querySelectorAll('.checkbox-group');
         checkboxGroups.forEach(group => {
-            group.addEventListener('change', function() {
+            group.addEventListener('change', function () {
                 if (this.checked) {
                     checkboxGroups.forEach(otherGroup => {
                         if (otherGroup !== this && otherGroup.closest('tr') === row) {
@@ -38,7 +38,7 @@ function uncheck(){
  * The function evaluates the responses to a set of questions and calculates the percentage of
  * affirmative answers.
  */
-function evaluate (){
+function evaluate() {
     var questions;
     var affirmativeQuestion = 0;
     var naQuestion = 0;
@@ -48,25 +48,26 @@ function evaluate (){
     rows.forEach(row => {
         const checkboxGroups = row.querySelectorAll('.checkbox-group');
         checkboxGroups.forEach(cheackB => {
-            if (cheackB.checked){
-                if(cheackB.value === "YES" ){
+            if (cheackB.checked) {
+                if (cheackB.value === "YES") {
                     affirmativeQuestion = affirmativeQuestion + 1;
-                }else if(cheackB.value === "N/A"){
+                } else if (cheackB.value === "N/A") {
                     naQuestion = naQuestion + 1;
                 }
             }
         });
     });
     questions = questions - naQuestion;
-    this.porcentaje = (affirmativeQuestion*100)/questions;
+    this.porcentaje = (affirmativeQuestion * 100) / questions;
     changeColorSemaphore(porcentaje)
+    displayPercentage(porcentaje);
 }
 //-------------------------------
 
 /**
  * The function changes the color of a semaphore based on a given percentage value.
  */
-function changeColorSemaphore(){
+function changeColorSemaphore() {
 
     console.log(1 >= 50 && this.porcentaje < 100);
 
@@ -92,10 +93,17 @@ function changeColorSemaphore(){
  * The function attaches a click event listener to a button and calls the evaluate function when the
  * button is clicked.
  */
-function attachListener(){
+function attachListener() {
     const evaluateButton = document.querySelector('#evaluateButton');
     evaluateButton.addEventListener('click', () => {
         changeColorSemaphore(this.evaluate());
     });
 }
+
+
+function displayPercentage(percentage) {
+    const percentageDisplay = document.querySelector('.percentage-display');
+    percentageDisplay.textContent = `Safe percentage: ${percentage.toFixed(2)}%`;
+}
+
 //------------------------------- END OF SCRIPT

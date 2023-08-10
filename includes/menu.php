@@ -50,11 +50,11 @@ $actual_url = $_SERVER['REQUEST_URI'];
             foreach ($content as $index => $item) {
                 $link = isset($links[$index]) ? $links[$index] : "#";
             ?>
-                <a class="flex items-center w-full h-auto px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="<?php echo $link; ?>">
+                <a class="flex items-center w-full h-auto px-3 mt-4 rounded hover:bg-gray-700 hover:text-gray-300" href="<?php echo $link; ?>">
                     <svg class="w-6 h-auto stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                     </svg>
-                    <span class="ml-2 text-sm font-medium"><?php echo $item['contenido_descripcion']; ?></span>
+                    <span class="ml-2 text-sm font-medium "><?php echo $item['contenido_descripcion']; ?></span>
                 </a>
             <?php } ?>
         </div>

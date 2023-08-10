@@ -103,10 +103,13 @@ if ($result) {
                     </svg>
                 </button>
             </div>
-            <div class="semaforo">
-                <div class="luz-roja"></div>
-                <div class="luz-amarilla"></div>
-                <div class="luz-verde"></div>
+            <div class="semaforo-info">
+                <div class="semaforo">
+                    <div class="luz-roja"></div>
+                    <div class="luz-amarilla"></div>
+                    <div class="luz-verde"></div>
+                </div>
+                <div class="percentage-display" id="percentageDisplay"></div>
             </div>
         </div>
     </div>
