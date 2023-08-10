@@ -1,3 +1,6 @@
+<?php
+$actual_url = $_SERVER['REQUEST_URI'];
+?>
 <!-- Component Start -->
 <div class="flex flex-col items-center w-40 h-full overflow-hidden text-gray-400 bg-gray-900 rounded">
     <a class="flex items-center w-full px-3 mt-3" href="/Proyecto_BD/index.php">
@@ -12,7 +15,10 @@
                 <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
                 </svg>
-                <span class="ml-2 text-sm font-medium">Content 1</span>
+                <?php
+                $underlineClass = ($actual_url == "/Proyecto_BD/pages/cuestionary.php") ? "underline" : "";
+                ?>
+                <span class="ml-2 text-sm font-medium <?php echo $underlineClass; ?>">Content 1</span>
             </a>
             <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
                 <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">

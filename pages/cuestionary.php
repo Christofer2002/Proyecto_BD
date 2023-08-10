@@ -44,11 +44,9 @@ $mysqli->close();
     <script src="../assets/js/cuestionary.js"></script>
     <title>Cuestionary</title>
     <link href="../assets/img/cuestionary_icon.png" type="png" rel="website icon">
-
 </head>
 
 <body>
-
     <div class="contenedor-cuestionario">
         <?php include '../includes/menu.php'; ?>
         <div class="container">

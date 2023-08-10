@@ -235,6 +235,8 @@ h2 a {
 
 .td-preguntas{
     width: 65%;
+    padding-right: 3rem;
+    text-align: justify;
 }
 
 .container-preguntas td,
