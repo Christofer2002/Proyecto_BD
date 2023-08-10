@@ -1,6 +1,37 @@
 <?php
+// Incluir el archivo de configuración de la conexión a la base de datos
+require_once __DIR__ . '/../config/config.php';
+
+// Variable para almacenar los mensajes de error o éxito
+$message = '';
+
+// Realizar la consulta SELECT para obtener todas las preguntas del cuestionario con sus descripciones de contenido
+
+$query = "SELECT c.descripcion AS contenido_descripcion FROM contenido c";
+$result = $mysqli->query($query);
+
+// Crear un array para almacenar las preguntas
+$content = array();
+
+// Verificar si la consulta fue exitosa
+if ($result) {
+    // Obtener todos los resultados y almacenarlos en el array
+    $content = $result->fetch_all(MYSQLI_ASSOC);
+    // Liberar los resultados de la memoria
+    $result->free();
+    if (empty($cuestionario)) {
+        $message = 'No hay preguntas en la tabla.';
+    }
+} else {
+    $message = 'Error en la consulta: ' . $mysqli->error;
+}
+
 $actual_url = $_SERVER['REQUEST_URI'];
+
+// Cierra la conexión a la base de datos al finalizar
+
 ?>
+
 <!-- Component Start -->
 <div class="flex flex-col items-center w-40 h-full overflow-hidden text-gray-400 bg-gray-900 rounded">
     <a class="flex items-center w-full px-3 mt-3" href="/Proyecto_BD/index.php">
@@ -11,59 +42,23 @@ $actual_url = $_SERVER['REQUEST_URI'];
     </a>
     <div class="w-full px-2">
         <div class="flex flex-col items-center w-full mt-3 border-t border-gray-700">
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <?php
-                $underlineClass = ($actual_url == "/Proyecto_BD/pages/cuestionary.php") ? "underline" : "";
-                ?>
-                <span class="ml-2 text-sm font-medium <?php echo $underlineClass; ?>">Content 1</span>
-            </a>
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <span class="ml-2 text-sm font-medium">Content 2</span>
-            </a>
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <span class="ml-2 text-sm font-medium">Content 3</span>
-            </a>
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <span class="ml-2 text-sm font-medium">Content 4</span>
-            </a>
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <span class="ml-2 text-sm font-medium">Content 5</span>
-            </a>
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <span class="ml-2 text-sm font-medium">Content 6</span>
-            </a>
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <span class="ml-2 text-sm font-medium">Content 7</span>
-            </a>
-            <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="/Proyecto_BD/pages/cuestionary.php">
-                <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
-                </svg>
-                <span class="ml-2 text-sm font-medium">Content 8</span>
-            </a>
+            <?php
+            // Array paralelo con enlaces correspondientes para cada elemento
+            $links = array(
+                "/Proyecto_BD/pages/cuestionary.php",
+            );
+            foreach ($content as $index => $item) {
+                $link = isset($links[$index]) ? $links[$index] : "#";
+            ?>
+                <a class="flex items-center w-full h-auto px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="<?php echo $link; ?>">
+                    <svg class="w-6 h-auto stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                    </svg>
+                    <span class="ml-2 text-sm font-medium"><?php echo $item['contenido_descripcion']; ?></span>
+                </a>
+            <?php } ?>
         </div>
-        <div class="flex flex-col items-center w-full mt-2 border-t border-gray-700">
+        <div class="flex flex-col items-center w-full mt-2 mb-2 border-t border-gray-700">
             <a class="flex items-center w-full h-12 px-3 mt-2 rounded hover:bg-gray-700 hover:text-gray-300" href="#">
                 <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />

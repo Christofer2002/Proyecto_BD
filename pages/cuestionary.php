@@ -28,9 +28,6 @@ if ($result) {
 } else {
     $message = 'Error en la consulta: ' . $mysqli->error;
 }
-
-// Cierra la conexión a la base de datos al finalizar
-$mysqli->close();
 ?>
 
 <!DOCTYPE html>
