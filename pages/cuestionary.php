@@ -40,76 +40,81 @@ $mysqli->close();
     <!-- Agregar el enlace al archivo CSS de Bootstrap -->
     <link href="../assets/css/normalize.css" rel="stylesheet">
     <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
     <script src="../assets/js/cuestionary.js"></script>
     <title>Cuestionary</title>
     <link href="../assets/img/cuestionary_icon.png" type="png" rel="website icon">
+
 </head>
 
 <body>
-    <h1 class="mb-3">Cuestionary Evaluation</h1>
 
-    <div class="container">
-        <div class="contenedor">
-            <div class="table-container">
-                <table class="container-preguntas">
-                    <thead>
-                        <tr>
-                            <th>
-                                <h1>Questions</h1>
-                            </th>
-                            <th>
-                                <h1>S</h1>
-                            </th>
-                            <th>
-                                <h1>N</h1>
-                            </th>
-                            <th>
-                                <h1>N/A</h1>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        foreach ($cuestionario as $pregunta) {
-                        ?>
+    <div class="contenedor-cuestionario">
+        <?php include '../includes/menu.php'; ?>
+        <div class="container">
+
+            <div class="contenedor">
+                <h1 class="mb-3">Cuestionary Evaluation</h1>
+                <div class="table-container">
+                    <table class="container-preguntas">
+                        <thead>
                             <tr>
-                                <td class="td-preguntas"><?php echo $pregunta['pregunta']; ?></td>
-                                <td><label class="checkbox-btn">
-                                        <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" value= "YES" name="pregunta_<?php echo $pregunta['id']; ?>_s">
-                                        <span class="checkmark"></span>
-                                    </label></td>
-                                <td><label class="checkbox-btn">
-                                        <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" value = "NO" name="pregunta_<?php echo $pregunta['id']; ?>_n">
-                                        <span class="checkmark"></span>
-                                    </label></td>
-                                <td><label class="checkbox-btn">
-                                        <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="N/A" name="pregunta_<?php echo $pregunta['id']; ?>_na">
-                                        <span class="checkmark"></span>
-                                    </label></td>
+                                <th>
+                                    <h2>Questions</h2>
+                                </th>
+                                <th>
+                                    <h2>S</h2>
+                                </th>
+                                <th>
+                                    <h2>N</h2>
+                                </th>
+                                <th>
+                                    <h2>N/A</h2>
+                                </th>
                             </tr>
-                        <?php
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            foreach ($cuestionario as $pregunta) {
+                            ?>
+                                <tr>
+                                    <td class="td-preguntas"><?php echo $pregunta['pregunta']; ?></td>
+                                    <td><label class="checkbox-btn">
+                                            <label for="checkbox"></label>
+                                            <input id="checkbox" type="checkbox" class="checkbox-group" value="YES" name="pregunta_<?php echo $pregunta['id']; ?>_s">
+                                            <span class="checkmark"></span>
+                                        </label></td>
+                                    <td><label class="checkbox-btn">
+                                            <label for="checkbox"></label>
+                                            <input id="checkbox" type="checkbox" class="checkbox-group" value="NO" name="pregunta_<?php echo $pregunta['id']; ?>_n">
+                                            <span class="checkmark"></span>
+                                        </label></td>
+                                    <td><label class="checkbox-btn">
+                                            <label for="checkbox"></label>
+                                            <input id="checkbox" type="checkbox" class="checkbox-group" value="N/A" name="pregunta_<?php echo $pregunta['id']; ?>_na">
+                                            <span class="checkmark"></span>
+                                        </label></td>
+                                </tr>
+                            <?php
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+                <button id="evaluateButton" class="cta">
+                    <span class="hover-underline-animation"> Evaluate </span>
+                    <svg viewBox="0 0 46 16" height="10" width="30" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal">
+                        <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" data-name="Path 10" id="Path_10"></path>
+                    </svg>
+                </button>
             </div>
-            <button id="evaluateButton" class="cta">
-                <span class="hover-underline-animation"> Evaluate </span>
-                <svg viewBox="0 0 46 16" height="10" width="30" xmlns="http://www.w3.org/2000/svg" id="arrow-horizontal">
-                    <path transform="translate(30)" d="M8,0,6.545,1.455l5.506,5.506H-30V9.039H12.052L6.545,14.545,8,16l8-8Z" data-name="Path 10" id="Path_10"></path>
-                </svg>
-            </button>
-        </div>
-        <div class="semaforo">
-            <div class="luz-roja"></div>
-            <div class="luz-amarilla"></div>
-            <div class="luz-verde"></div>
+            <div class="semaforo">
+                <div class="luz-roja"></div>
+                <div class="luz-amarilla"></div>
+                <div class="luz-verde"></div>
+            </div>
         </div>
     </div>
-
     <?php include '../includes/footer.php'; ?>
 </body>
 

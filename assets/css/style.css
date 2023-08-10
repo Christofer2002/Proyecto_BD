@@ -29,10 +29,11 @@ body {
 
 
 h1 {
-    font-size: 1.8rem;
-    font-weight: 300;
-    line-height: 1em;
+    font-size: 1.8rem !important;
+    font-weight: 300 !important;
     text-align: center;
+    font-weight: bold !important;
+    margin: 1rem 0 1rem 0 !important;
 }
 
 h2 {
@@ -41,7 +42,7 @@ h2 {
     text-align: center;
     display: block;
     line-height: 1em;
-    padding-bottom: 2em;
+    padding-bottom: 1rem;
 }
 
 h2 a {
@@ -62,7 +63,6 @@ h2 a {
 
 .container {
     margin: 0 auto;
-    padding: 20px;
     display: flex;
     text-align: center;
 }
@@ -153,8 +153,7 @@ h2 a {
 
 .contenedor {
     display: block;
-    width: 60%;
-
+    width: 70%;
 }
 
 .cta {
@@ -211,9 +210,9 @@ h2 a {
 
 }
 
-.container-preguntas th h1 {
+.container-preguntas th h2 {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     text-align: left;
 }
 
@@ -297,7 +296,7 @@ h2 a {
     justify-content: center;
     margin: 0 auto;
     gap: .4rem;
-    margin: 5rem auto;
+    margin: 15rem auto;
     border: 1px solid #fff;
 }
 
@@ -321,14 +320,18 @@ h2 a {
 }
 
 .table-container {
-    max-height: 350px; /* Cambia esto al valor deseado */
+    max-height: 600px; /* Cambia esto al valor deseado */
     overflow-y: auto;
     margin-bottom: 1.5rem;
 }
 
-.container-preguntas th {
-    position: sticky;
-    top: 0;
-    z-index: 1; /* Asegura que el encabezado esté por encima del contenido desplazado */
+.contenedor-cuestionario{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    margin-bottom: 2rem;
 }
 
+.container-preguntas th:first-child,
+.container-preguntas td:first-child {
+    padding-left: 15px;
+}

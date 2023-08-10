@@ -31,6 +31,7 @@ a {
   justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
+  text-align: center;
   height: 50vw;
   min-height: 400px;
   max-height: 550px;
@@ -66,37 +67,12 @@ a {
   animation: grow 250s linear 10ms infinite;
   transition: all 0.4s ease-in-out;
   z-index: -2;
-  opacity: 0.6; /* Ajusta la opacidad aquí */
+  opacity: 0.6;
+  /* Ajusta la opacidad aquí */
 }
 
 .header a {
   color: #eee
-}
-
-.menu {
-  display: block;
-  width: 40px;
-  height: 30px;
-  border: 2px solid #fff;
-  border-radius: 3px;
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  text-decoration: none
-}
-
-.menu:after {
-  content: "";
-  display: block;
-  width: 20px;
-  height: 3px;
-  background: #fff;
-  position: absolute;
-  margin: 0 auto;
-  top: 5px;
-  left: 0;
-  right: 0;
-  box-shadow: 0 8px, 0 16px
 }
 
 .logo {
@@ -115,7 +91,6 @@ a {
   height: 40px
 }
 
-.sides,
 .info {
   flex: 0 0 auto;
   width: 50%
@@ -126,6 +101,24 @@ a {
   padding: 15% 10% 0 10%;
   text-align: center;
   text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2)
+}
+
+.info h4,
+.info h1,
+.info div{
+  margin-bottom: 2.2rem;
+}
+
+.info h1{
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.info h4{
+  font-size: 1.2rem;
+  font-weight: 500;
 }
 
 .author {
@@ -206,3 +199,9 @@ ul {
   color: #757575;
   font-size: 15px;
 }
+
+.contenedor-inicio {
+  display: grid;
+  grid-template-columns: auto 1fr; /* El primer elemento toma el espacio necesario, el segundo el resto */
+}
+

@@ -8,21 +8,11 @@
   <link href="./assets/css/header.css" rel="stylesheet">
   <title>Inicio</title>
   <link href="./assets/img/database_icon.png" type="png" rel="website icon">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body>
   <?php include './includes/header.php'; ?>
-  <section class="content">
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nisl turpis,
-      porttitor et finibus id, viverra a metus. Praesent non ante sed orci
-      posuere varius quis sit amet dui. Cras molestie magna orci, id gravida
-      dolor molestie in. Duis sollicitudin turpis quis tortor egestas, ut
-      ultrices nisl elementum. Vestibulum sed ipsum eget nulla laoreet cursus
-      in ac sem. Integer a suscipit justo, quis aliquam sapien. Maecenas et
-      tellus nibh. Vivamus tincidunt eros id commodo pellentesque.
-    </p>
-  </section>
   <?php include './includes/footer.php'; ?>
 </body>
 
