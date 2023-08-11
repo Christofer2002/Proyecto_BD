@@ -32,7 +32,6 @@ a {
   align-items: flex-start;
   align-content: flex-start;
   text-align: center;
-  height: 50vw;
   min-height: 400px;
   max-height: 550px;
   min-width: 300px;
@@ -64,7 +63,7 @@ a {
   background: #1B2030 url(../img/img_header.jpg) 50% 0 no-repeat;
   background-size: 100%;
   background-attachment: fixed;
-  animation: grow 250s linear 10ms infinite;
+  animation: grow 360s linear 10ms infinite;
   transition: all 0.4s ease-in-out;
   z-index: -2;
   opacity: 0.6;
@@ -203,5 +202,13 @@ ul {
 .contenedor-inicio {
   display: grid;
   grid-template-columns: auto 1fr;
-  /* El primer elemento toma el espacio necesario, el segundo el resto */
+}
+
+.primer-columna {
+  height: 54rem; /* Cambia 200px al valor deseado */
+}
+
+.container-main{
+  display: grid;
+  grid-template-rows: 1fr 1fr;
 }

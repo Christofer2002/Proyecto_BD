@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;900&family=Staatliches&display=swap');
+
+:root {
+  --fuente-principal: 'Raleway', sans-serif;
+  --fuente-heading: 'Staatliches', cursive;
+
+  --blanco: #fff;
+}
+
+
+body {
+  margin: 0;
+  height: 120%;
+  font-family: var(--fuente-principal);
+  background-color: #1F2739 !important;
+}
+
+p {
+  color: var(--blanco);
+}
+
+a {
+  text-decoration: none
+}
+
+
+.main{
+    margin: 2rem 4rem 0 4rem;
+  }
+  

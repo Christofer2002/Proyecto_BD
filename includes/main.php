@@ -1,7 +1,5 @@
-<div class="contenedor-inicio">
-    <?php include './includes/menu.php'; ?>
-
-    <div class="header">
+<div class="container-main">
+    <header class="header">
         <div class="info">
             <h1><a>Database Administrators</a></h1>
             <h4>Eif404_2023_Grupo4</h4>
@@ -11,5 +9,11 @@
                 2023
             </div>
         </div>
-    </div>
+    </header>
+    <main class="main">
+
+        <p class="text-center">
+            ¡Bienvenido al Administrador de Bases de Datos!
+        </p>
+    </main>
 </div>
