@@ -24,7 +24,7 @@ a {
 }
 
 .header {
-  position: relative;
+
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
@@ -42,7 +42,7 @@ a {
   content: "";
   width: 100%;
   height: 100%;
-  position: absolute;
+
   bottom: 0;
   left: 0;
   z-index: -1;
@@ -202,10 +202,6 @@ ul {
 .contenedor-inicio {
   display: grid;
   grid-template-columns: auto 1fr;
-}
-
-.primer-columna {
-  height: 54rem; /* Cambia 200px al valor deseado */
 }
 
 .container-main{
