@@ -61,10 +61,11 @@ h2 a {
 }
 
 
-.container {
-    margin: 0 auto;
-    display: flex;
+.container-main {
+    display: grid;
+    grid-template-columns: auto 1fr;
     text-align: center;
+    margin: 0 3rem;
 }
 
 /* Customize the label (the checkbox-btn) */
@@ -153,7 +154,7 @@ h2 a {
 
 .contenedor {
     display: block;
-    width: 70%;
+    width: 100%;
 }
 
 .cta {
@@ -161,6 +162,12 @@ h2 a {
     background: none;
     display: flex;
     cursor: pointer;
+    justify-content: flex-end;
+}
+
+.button-evaluate{
+    display: flex;
+    justify-content: end;
 }
 
 .cta span {
@@ -175,6 +182,7 @@ h2 a {
 .cta svg {
     transform: translateX(-8px);
     transition: all 0.3s ease;
+    margin-top: .3rem;
 }
 
 .cta:hover svg {
@@ -207,7 +215,6 @@ h2 a {
 .cta:hover .hover-underline-animation:after {
     transform: scaleX(1);
     transform-origin: bottom left;
-
 }
 
 .container-preguntas th h2 {
@@ -292,9 +299,9 @@ h2 a {
 
 
 .semaforo-info{
-    display: grid;
-    grid-template-rows: 1fr 1fr;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10rem;
 }
 
 .semaforo {
@@ -302,11 +309,10 @@ h2 a {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
-    gap: .4rem;
     margin-top: 13rem;
     margin-bottom: 1rem;
     border: 1px solid #fff;
+    padding: 1.5rem;
 }
 
 .luz-roja, .luz-amarilla, .luz-verde{
@@ -329,15 +335,9 @@ h2 a {
 }
 
 .table-container {
-    max-height: 600px; /* Cambia esto al valor deseado */
+    max-height: 550px; /* Cambia esto al valor deseado */
     overflow-y: auto;
     margin-bottom: 1.5rem;
-}
-
-.contenedor-cuestionario{
-    display: grid;
-    grid-template-columns: auto 1fr;
-    margin-bottom: 2rem;
 }
 
 .container-preguntas th:first-child,
@@ -346,6 +346,6 @@ h2 a {
 }
 
 #percentageDisplay {
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: bold;
 }

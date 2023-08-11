@@ -78,14 +78,35 @@ function changeColorSemaphore() {
         luzRoja.style.backgroundColor = 'red';
         luzAmarilla.style.backgroundColor = 'gray';
         luzVerde.style.backgroundColor = 'gray';
+        Swal.fire({
+            icon: 'error',
+            title: '¡Percentage is insecure!',
+            text: 'Should be improved',
+            showConfirmButton: false,
+            timer: 1500 // El alert se cerrará automáticamente después de 2 segundos
+        });
     } else if (this.porcentaje >= 50 && this.porcentaje < 100) {
         luzRoja.style.backgroundColor = 'gray';
         luzAmarilla.style.backgroundColor = 'yellow';
         luzVerde.style.backgroundColor = 'gray';
+        Swal.fire({
+            icon: 'success',
+            title: '¡Percentage is safe',
+            text: 'But it can be improved',
+            showConfirmButton: false,
+            timer: 1500 // El alert se cerrará automáticamente después de 2 segundos
+        });
     } else {
         luzRoja.style.backgroundColor = 'gray';
         luzAmarilla.style.backgroundColor = 'gray';
         luzVerde.style.backgroundColor = 'green';
+        Swal.fire({
+            icon: 'success',
+            title: '¡Percentage is secure!',
+            text: 'It is done',
+            showConfirmButton: false,
+            timer: 1500 // El alert se cerrará automáticamente después de 2 segundos
+        });
     }
 }
 //-------------------------------

@@ -31,6 +31,17 @@ $links = array(
     "/Proyecto_BD/pages/cuestionary.php",
 );
 
+$svgs = array(
+    "fa fa-file-circle-check fa-lg",
+    "fa fa-chart-pie fa-lg",
+    "fa fa-network-wired fa-lg",
+    "fa fa-memory fa-lg",
+    "fa fa-hard-drive fa-lg",
+    "fa fa-user-shield fa-lg",
+    "fa fa-hammer fa-lg",
+    "fa fa-eye fa-lg"
+);
+
 // Cierra la conexión a la base de datos al finalizar
 
 ?>
@@ -51,7 +62,9 @@ $links = array(
     </div>
     <nav class="main-menu">
         <div>
-            <a class="logo" href="">
+            <a class="logo" href="/Proyecto_BD/index.php">
+                <i class="fa-solid fa-database fa-lg"></i>
+                <span class="nav-text">Database Administrator</span>
             </a>
         </div>
         <div class="settings"></div>
@@ -73,15 +86,15 @@ $links = array(
                 <?php
                 foreach ($content as $index => $item) {
                     $link = isset($links[$index]) ? $links[$index] : "#";
+                    $svg = isset($svgs[$index]) ? $svgs[$index] : "#";
                 ?>
-                    <li class="darkerlishadow">
+                    <li class="darkerli">
                         <a href="<?php echo $link; ?>">
-                            <i class=" fa fa-clock-o fa-lg"></i>
+                            <i class="<?php echo $svg?>"></i>
                             <span class="nav-text"><?php echo $item['contenido_descripcion']; ?></span>
                         </a>
                     </li>
                 <?php } ?>
-                
             </ul>
             <li>
                 <a href="http://startific.com">
@@ -94,12 +107,12 @@ $links = array(
                     <a href="http://startific.com">
                         <i class="fa fa-lightbulb-o fa-lg"></i>
                         <span class="nav-text">
-                            BLOG
+                            Blog
                         </span>
                     </a>
                 </li>
             </ul>
     </nav>
 </body>
-
+<script src="https://kit.fontawesome.com/e426259eb0.js" crossorigin="anonymous"></script>
 </html>

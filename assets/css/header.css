@@ -202,6 +202,16 @@ ul {
 .contenedor-inicio {
   display: grid;
   grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-row: 2/-3;
+  grid-column: 2/-3;
+  
+}
+
+/* Específica el área para las celdas de la segunda fila */
+.celda-combinada {
+  grid-row: 2;
+  grid-column: span 2; /* Ocupar dos columnas */
 }
 
 .container-main{
