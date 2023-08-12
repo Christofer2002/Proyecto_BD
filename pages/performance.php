@@ -1,3 +1,8 @@
+<?php
+// require_once '../config/sentence.php';
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
