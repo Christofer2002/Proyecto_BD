@@ -1,7 +1,7 @@
 <?php
 define('DB_HOST', 'localhost'); // El host donde se encuentra tu servidor de MySQL
 define('DB_USER', 'root'); // El nombre de usuario para acceder a la base de datos
-define('DB_PASS', ''); // La contraseña del usuario
+define('DB_PASS', 'root'); // La contraseña del usuario
 define('DB_NAME', 'proyecto_bd'); // El nombre de la base de datos que deseas utilizar
 
 // Intenta conectarte a la base de datos

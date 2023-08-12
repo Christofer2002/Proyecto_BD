@@ -61,12 +61,18 @@ $svgs = array(
 <body>
     </div>
     <nav class="main-menu">
-        <div>
-            <a class="logo" href="/Proyecto_BD/index.php">
-                <i class="fa-solid fa-database fa-lg"></i>
-                <span class="nav-text">Database Administrator</span>
-            </a>
-        </div>
+        <?php
+        if ($actual_url == ("/Proyecto_BD/index.php")) {
+        ?>
+            <div>
+                <a class="logo" href="/Proyecto_BD/index.php">
+                    <i class="fa-solid fa-database fa-lg"></i>
+                    <span class="nav-text">Database Administrator</span>
+                </a>
+            </div>
+        <?php
+        }
+        ?>
         <div class="settings"></div>
         <div class="scrollbar" id="style-1">
             <ul>
@@ -77,7 +83,7 @@ $svgs = array(
                     </a>
                 </li>
                 <li>
-                    <a href="http://startific.com">
+                    <a href="#">
                         <i class="fa fa-user fa-lg"></i>
                         <span class="nav-text">Login</span>
                     </a>
@@ -90,7 +96,7 @@ $svgs = array(
                 ?>
                     <li class="darkerli">
                         <a href="<?php echo $link; ?>">
-                            <i class="<?php echo $svg?>"></i>
+                            <i class="<?php echo $svg ?>"></i>
                             <span class="nav-text"><?php echo $item['contenido_descripcion']; ?></span>
                         </a>
                     </li>
@@ -115,4 +121,5 @@ $svgs = array(
     </nav>
 </body>
 <script src="https://kit.fontawesome.com/e426259eb0.js" crossorigin="anonymous"></script>
+
 </html>

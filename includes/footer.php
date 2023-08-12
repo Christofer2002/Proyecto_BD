@@ -61,7 +61,7 @@
             </a>
         </div>
         <p class="mt-8 text-base leading-6 text-center text-gray-400">
-            © 2023 Database Adminitrators, Inc. All rights reserved.
+            © 2023 Database Administrators, Inc. All rights reserved.
         </p>
     </div>
 </section>

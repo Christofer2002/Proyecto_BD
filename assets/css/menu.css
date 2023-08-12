@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
 
 .settings {
-  
+
     float: left;
     background: url(https://s3.postimg.org/bqfooag4z/startific.jpg);
     background-repeat: no-repeat;
@@ -22,7 +22,6 @@
 }
 
 .scrollbar:hover {
-
     height: 90%;
     width: 100%;
     overflow-y: scroll;
@@ -81,7 +80,7 @@ nav.main-menu.expanded {
     position: absolute;
     top: 0;
     bottom: 0;
-    height: 150%;
+    height: 110%;
     left: 0;
     width: 55px;
     overflow: hidden;
@@ -242,6 +241,12 @@ nav.main-menu li.active>a,
     text-shadow: 0px 0px 0px;
 }
 
+.page_actual {
+    color: #fff;
+    background-color: #00bbbb;
+    text-shadow: 0px 0px 0px;
+}
+
 .area {
     float: left;
     background: #e2e2e2;
@@ -256,7 +261,7 @@ nav.main-menu li.active>a,
     src: local('Titillium WebLight'), local('TitilliumWeb-Light'), url(http://themes.googleusercontent.com/static/fonts/titilliumweb/v2/anMUvcNT0H1YN4FII8wpr24bNCNEoFTpS2BTjF6FB5E.woff) format('woff');
 }
 
-.logo{
+.logo {
     gap: 1rem;
     margin-left: .5rem;
 }
