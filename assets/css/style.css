@@ -349,3 +349,7 @@ h2 a {
     font-size: 1rem;
     font-weight: bold;
 }
+
+.categoria-row td{
+    background-color: #2a2c31;
+}

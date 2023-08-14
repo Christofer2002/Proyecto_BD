@@ -44,24 +44,27 @@ function evaluate() {
     var naQuestion = 0;
 
     const rows = document.querySelectorAll('tr'); // Obtener todas las filas
-    questions = rows.length - 1;
+    questions = rows.length - document.querySelectorAll('.categoria-row').length;
     rows.forEach(row => {
-        const checkboxGroups = row.querySelectorAll('.checkbox-group');
-        checkboxGroups.forEach(cheackB => {
-            if (cheackB.checked) {
-                if (cheackB.value === "YES") {
-                    affirmativeQuestion = affirmativeQuestion + 1;
-                } else if (cheackB.value === "N/A") {
-                    naQuestion = naQuestion + 1;
+        if (!row.classList.contains('categoria-row')) {
+            const checkboxGroups = row.querySelectorAll('.checkbox-group');
+            checkboxGroups.forEach(cheackB => {
+                if (cheackB.checked) {
+                    if (cheackB.value === "YES") {
+                        affirmativeQuestion = affirmativeQuestion + 1;
+                    } else if (cheackB.value === "N/A") {
+                        naQuestion = naQuestion + 1;
+                    }
                 }
-            }
-        });
+            });
+        }
     });
-    questions = questions - naQuestion;
+    questions = (questions - 1) - naQuestion;
     this.porcentaje = (affirmativeQuestion * 100) / questions;
-    changeColorSemaphore(porcentaje)
-    displayPercentage(porcentaje);
+    changeColorSemaphore();
+    displayPercentage(this.porcentaje);
 }
+
 //-------------------------------
 
 /**
