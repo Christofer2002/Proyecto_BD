@@ -50,13 +50,13 @@ if ($result) {
     </div>
     <div class="container-main">
         <div class="contenedor">
-            <h1 class="mb-3">Cuestionary Evaluation</h1>
+            <h1 class="mb-3">Control Objectives</h1>
             <div class="table-container">
                 <table class="container-preguntas">
                     <thead>
                         <tr>
                             <th>
-                                <h2>Questions</h2>
+                                <h2>Objetives</h2>
                             </th>
                             <th>
                                 <h2>S</h2>
