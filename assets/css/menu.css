@@ -69,7 +69,7 @@
 
 .main-menu:hover,
 nav.main-menu.expanded {
-    width: 250px;
+    width: 270px;
     overflow: hidden;
     opacity: 1;
 
@@ -77,7 +77,7 @@ nav.main-menu.expanded {
 
 .main-menu {
     background: #F7F7F7;
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     height: 110%;
@@ -159,7 +159,7 @@ nav.main-menu.expanded {
 
 
 .settings:hover,
-settings:focus {
+.settings:focus {
     background: url(https://s17.postimg.org/74cl7s05b/logo_hover.jpg);
     -webkit-transition: all 0.2s ease-in-out, width 0, height 0, top 0, left 0;
     -moz-transition: all 0.2s ease-in-out, width 0, height 0, top 0, left 0;
@@ -264,4 +264,40 @@ nav.main-menu li.active>a,
 .logo {
     gap: 1rem;
     margin-left: .5rem;
+}
+
+/* Estilos para el menú desplegable */
+.sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0%;
+    width: 96%;
+    z-index: 999;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Muestra el menú desplegable al pasar el mouse sobre el elemento padre */
+.main-menu li:hover .sub-menu {
+    display: block;
+}
+
+/* Estilos para los elementos de menú desplegable */
+.sub-menu li {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.sub-menu li:last-child {
+    border-bottom: none;
+}
+
+.sub-menu li a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 7px 0 7px 3px;
 }

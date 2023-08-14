@@ -42,6 +42,12 @@ $svgs = array(
     "fa fa-eye fa-lg"
 );
 
+// Array de submenús correspondientes a cada opción en el menú
+$submenus = array(
+    array("Cuestionary", "Submenu 2", "Submenu 3"),
+    // Agrega más submenús según sea necesario
+);
+
 // Cierra la conexión a la base de datos al finalizar
 
 ?>
@@ -82,6 +88,7 @@ $svgs = array(
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
+                </li>
                 <li>
                     <a href="#">
                         <i class="fa fa-user fa-lg"></i>
@@ -90,15 +97,24 @@ $svgs = array(
                 </li>
                 </li>
                 <?php
+                // Dentro del bucle foreach
                 foreach ($content as $index => $item) {
                     $link = isset($links[$index]) ? $links[$index] : "#";
                     $svg = isset($svgs[$index]) ? $svgs[$index] : "#";
+                    $submenuOptions = isset($submenus[$index]) ? $submenus[$index] : array();
                 ?>
                     <li class="darkerli">
-                        <a href="<?php echo $link; ?>">
+                        <a>
                             <i class="<?php echo $svg ?>"></i>
                             <span class="nav-text"><?php echo $item['contenido_descripcion']; ?></span>
                         </a>
+                        <?php if (!empty($submenuOptions)) { ?>
+                            <ul class="sub-menu">
+                                <?php foreach ($submenuOptions as $submenuOption) { ?>
+                                    <li class="darkerli"><a href="<?php echo $link; ?>"><?php echo $submenuOption; ?></a></li>
+                                <?php } ?>
+                            </ul>
+                        <?php } ?>
                     </li>
                 <?php } ?>
             </ul>
