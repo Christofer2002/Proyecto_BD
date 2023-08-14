@@ -56,7 +56,7 @@ if ($result) {
                     <thead>
                         <tr>
                             <th>
-                                <h2>Objetives</h2>
+                                <h2>Objectives</h2>
                             </th>
                             <th>
                                 <h2>S</h2>
