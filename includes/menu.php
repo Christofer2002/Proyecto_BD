@@ -44,7 +44,7 @@ $svgs = array(
 
 // Array de submenús correspondientes a cada opción en el menú
 $submenus = array(
-    array("Cuestionary", "Submenu 2", "Submenu 3"),
+    array("Objectives Control"),
     // Agrega más submenús según sea necesario
 );
 
