@@ -19,7 +19,14 @@ if (!$conn) {
 $query_cuestionary = "SELECT c.descripcion AS categoria, cu.id AS cuestionario_id, cu.pregunta
 FROM cuestionario cu
 INNER JOIN contenido cont ON cu.id_contenido = cont.id
-INNER JOIN categoria c ON cu.id_categoria = c.id";
+INNER JOIN categoria c ON cu.id_categoria = c.id
+ORDER BY
+    CASE c.descripcion
+        WHEN 'Quality' THEN 1
+        WHEN 'Risk' THEN 2
+        WHEN 'Planning' THEN 3
+    END,
+    cu.id";
 $stmt = oci_parse($conn, $query_cuestionary);
 oci_execute($stmt);
 

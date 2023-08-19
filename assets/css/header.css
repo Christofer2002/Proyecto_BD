@@ -58,8 +58,8 @@ a {
   background: #1B2030 url(../img/img_header.jpg) 50% 0 no-repeat;
   background-size: 100%;
   background-attachment: fixed;
-  animation: grow 360s linear 10ms infinite;
-  transition: all 0.4s ease-in-out;
+  /* animation: grow 360s linear 10ms infinite;
+  transition: all 0.4s ease-in-out; */
   z-index: -2;
   opacity: 0.6;
   margin-left: 2rem;

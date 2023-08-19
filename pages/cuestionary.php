@@ -62,7 +62,6 @@ if ($stmt) {
                     <tbody>
                         <?php
                         $currentCategory = '';
-
                         foreach ($cuestionario as $pregunta) {
                             if ($currentCategory !== $pregunta['CATEGORIA']) {
                                 $currentCategory = $pregunta['CATEGORIA'];
