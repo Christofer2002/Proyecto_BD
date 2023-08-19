@@ -5,25 +5,22 @@ require_once __DIR__ . '/../config/config.php';
 // Variable para almacenar los mensajes de error o éxito
 $message = '';
 
-// Realizar la consulta SELECT para obtener todas las preguntas del cuestionario con sus descripciones de contenido
-
-$query = "SELECT c.descripcion AS contenido_descripcion FROM contenido c";
-$result = $mysqli->query($query);
-
 // Crear un array para almacenar las preguntas
 $content = array();
 
 // Verificar si la consulta fue exitosa
-if ($result) {
-    // Obtener todos los resultados y almacenarlos en el array
-    $content = $result->fetch_all(MYSQLI_ASSOC);
-    // Liberar los resultados de la memoria
-    $result->free();
-    if (empty($cuestionario)) {
+if ($stmtm) {
+    // Obtener los resultados y almacenarlos en el array
+    while ($row = oci_fetch_assoc($stmtm)) {
+        $content[] = $row;
+    }
+    // Liberar los recursos
+    oci_free_statement($stmtm);
+    if (empty($content)) {
         $message = 'No hay preguntas en la tabla.';
     }
 } else {
-    $message = 'Error en la consulta: ' . $mysqli->error;
+    $message = 'Error en la consulta: ' . oci_error($stmtm);
 }
 
 $actual_url = $_SERVER['REQUEST_URI'];
@@ -106,7 +103,7 @@ $submenus = array(
                     <li class="darkerli">
                         <a>
                             <i class="<?php echo $svg ?>"></i>
-                            <span class="nav-text"><?php echo $item['contenido_descripcion']; ?></span>
+                            <span class="nav-text"><?php echo $item['CONTENIDO_DESCRIPCION']; ?></span>
                         </a>
                         <?php if (!empty($submenuOptions)) { ?>
                             <ul class="sub-menu">
