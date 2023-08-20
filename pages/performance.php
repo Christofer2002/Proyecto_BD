@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Performance</title>
+    <link href="/Proyecto_BD/assets/css/graphic.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -17,8 +18,8 @@
     <p>Ejemplo de libreria para graficar</p>
     <div class="chart-container">
         <canvas id="sharedSqlChart"></canvas>
-        <canvas id="databaseBufferChart"></canvas>
-        <canvas id="redoLogBufferChart"></canvas>
+        <!-- <canvas id="databaseBufferChart"></canvas> -->
+        <!-- <canvas id="redoLogBufferChart"></canvas> -->
     </div>
     <script>
         document.addEventListener("DOMContentLoaded", function() {

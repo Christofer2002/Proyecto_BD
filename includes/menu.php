@@ -19,11 +19,11 @@ if ($result) {
     $content = $result->fetch_all(MYSQLI_ASSOC);
     // Liberar los resultados de la memoria
     $result->free();
-    if (empty($cuestionario)) {
-        $message = 'No hay preguntas en la tabla.';
+    if (empty($content)) {
+        echo 'No hay contenidos.';
     }
 } else {
-    $message = 'Error en la consulta: ' . $mysqli->error;
+    echo 'Error en la consulta: ' . $mysqli->error;
 }
 
 $actual_url = $_SERVER['REQUEST_URI'];
@@ -88,13 +88,11 @@ $submenus = array(
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
-                </li>
                 <li>
                     <a href="#">
                         <i class="fa fa-user fa-lg"></i>
                         <span class="nav-text">Login</span>
                     </a>
-                </li>
                 </li>
                 <?php
                 // Dentro del bucle foreach
