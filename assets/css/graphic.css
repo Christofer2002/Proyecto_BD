@@ -1,41 +1,76 @@
-body{
-    height: 100vh;
-    width: auto;
-    margin: 0;
-    border: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+:root {
+  --fuente-principal: "Raleway", sans-serif;
+  --fuente-heading: "Staatliches", cursive;
+
+  --blanco: #fff;
 }
 
-.Datos_buffer{
-    position: relative;
-    height: 45%;
-    width: 90%;
-    max-height: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: start;
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: var(--fuente-principal);
+  font-weight: 300;
+  line-height: 1.42em;
+  color: #a7a1ae;
+  background-color: #1f2739 !important;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  margin-top: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tbody tr:hover {
+  background-color: #4d4242;
+  color: var(--blanco);
+}
+
+.chart-container {
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.scrollable-table {
+    display: block;
+    max-height: 400px; /* Ajusta esta altura según tus necesidades */
+    max-width: auto;
     overflow-y: auto;
-    border: 2px solid black;
-    margin-top: 5%;
-}
-.Datos_buffer table{
-    margin-top: 20px;
-    border-collapse: collapse;
-}
-.Datos_buffer table td, th{
-    border: 1px solid black;
 }
 
-tr td{
-    width: 10% !important;
-    padding: 5px 0;
-    text-align: center;
-
+tr{
+    background-color: #34383f;
 }
-
-tr td:last-child {
-    width: 20% !important;
-    text-align: start !important;
- }

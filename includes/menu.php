@@ -26,6 +26,7 @@ if ($stmtm) {
 $actual_url = $_SERVER['REQUEST_URI'];
 $links = array(
     "/Proyecto_BD/pages/cuestionary.php",
+    "/Proyecto_BD/pages/buffer.php"
 );
 
 $svgs = array(
@@ -41,7 +42,7 @@ $svgs = array(
 
 // Array de submenús correspondientes a cada opción en el menú
 $submenus = array(
-    array("Objectives Control"),
+    array("Objectives Control", "Buffer Control"),
     // Agrega más submenús según sea necesario
 );
 
@@ -92,7 +93,7 @@ $submenus = array(
                     </a>
                 </li>
                 <?php
-                // Dentro del bucle foreach
+                // Bucle para iterar a través del contenido
                 foreach ($content as $index => $item) {
                     $link = isset($links[$index]) ? $links[$index] : "#";
                     $svg = isset($svgs[$index]) ? $svgs[$index] : "#";
@@ -104,9 +105,13 @@ $submenus = array(
                             <span class="nav-text"><?php echo $item['CONTENIDO_DESCRIPCION']; ?></span>
                         </a>
                         <?php if (!empty($submenuOptions)) { ?>
+                            <!-- Abre el submenú -->
                             <ul class="sub-menu">
-                                <?php foreach ($submenuOptions as $submenuOption) { ?>
-                                    <li class="darkerli"><a href="<?php echo $link; ?>"><?php echo $submenuOption; ?></a></li>
+                                <?php foreach ($submenuOptions as $subIndex => $submenuOption) { ?>
+                                    <!-- Enlace del submenú utilizando el enlace correspondiente -->
+                                    <li class="darkerli">
+                                        <a href="<?php echo isset($links[$subIndex]) ? $links[$subIndex] : "#"; ?>"><?php echo $submenuOption; ?></a>
+                                    </li>
                                 <?php } ?>
                             </ul>
                         <?php } ?>
