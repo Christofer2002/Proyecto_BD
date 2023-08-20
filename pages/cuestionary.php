@@ -2,32 +2,22 @@
 // Incluir el archivo de configuración de la conexión a la base de datos
 require_once '../config/config.php';
 
-// Variable para almacenar los mensajes de error o éxito
-$message = '';
-
-// Realizar la consulta SELECT para obtener todas las preguntas de la tabla "cuestionario"
-
-$query = "SELECT c.descripcion AS categoria, cu.id AS cuestionario_id, cu.pregunta
-            FROM cuestionario cu
-            INNER JOIN contenido cont ON cu.id_contenido = cont.id
-            INNER JOIN categoria c ON cu.id_categoria = c.id";
-$result = $mysqli->query($query);
-
-
 // Crear un array para almacenar las preguntas
 $cuestionario = array();
 
 // Verificar si la consulta fue exitosa
-if ($result) {
-    // Obtener todos los resultados y almacenarlos en el array
-    $cuestionario = $result->fetch_all(MYSQLI_ASSOC);
-    // Liberar los resultados de la memoria
-    $result->free();
+if ($stmt) {
+    // Obtener los resultados y almacenarlos en el array
+    while ($row = oci_fetch_assoc($stmt)) {
+        $cuestionario[] = $row;
+    }
+    // Liberar los recursos
+    oci_free_statement($stmt);
     if (empty($cuestionario)) {
         $message = 'No hay preguntas en la tabla.';
     }
 } else {
-    $message = 'Error en la consulta: ' . $mysqli->error;
+    $message = 'Error en la consulta: ' . oci_error($stmt);
 }
 ?>
 
@@ -72,10 +62,9 @@ if ($result) {
                     <tbody>
                         <?php
                         $currentCategory = '';
-
                         foreach ($cuestionario as $pregunta) {
-                            if ($currentCategory !== $pregunta['categoria']) {
-                                $currentCategory = $pregunta['categoria'];
+                            if ($currentCategory !== $pregunta['CATEGORIA']) {
+                                $currentCategory = $pregunta['CATEGORIA'];
                         ?>
                                 <tr class="categoria-row">
                                     <td colspan="5"><strong><?php echo $currentCategory; ?></strong></td>
@@ -84,20 +73,20 @@ if ($result) {
                             }
                             ?>
                             <tr>
-                                <td class="td-preguntas"><?php echo $pregunta['pregunta']; ?></td>
+                                <td class="td-preguntas"><?php echo $pregunta['PREGUNTA']; ?></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="YES" name="pregunta_<?php echo $pregunta['cuestionario_id']; ?>_s">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="YES" name="pregunta_<?php echo $pregunta['CUESTIONARIO_ID']; ?>_s">
                                         <span class="checkmark"></span>
                                     </label></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="NO" name="pregunta_<?php echo $pregunta['cuestionario_id']; ?>_n">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="NO" name="pregunta_<?php echo $pregunta['CUESTIONARIO_ID']; ?>_n">
                                         <span class="checkmark"></span>
                                     </label></td>
                                 <td><label class="checkbox-btn">
                                         <label for="checkbox"></label>
-                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="N/A" name="pregunta_<?php echo $pregunta['cuestionario_id']; ?>_na">
+                                        <input id="checkbox" type="checkbox" class="checkbox-group" value="N/A" name="pregunta_<?php echo $pregunta['CUESTIONARIO_ID']; ?>_na">
                                         <span class="checkmark"></span>
                                     </label></td>
                             </tr>
