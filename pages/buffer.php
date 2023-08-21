@@ -153,7 +153,7 @@ if ($updateRealTimeData) {
                             <th>SIZE</th>
                             <th>USED</th>
                             <th>PROCESS ID</th>
-                            <th>USED</th>
+                            <th>MEM PERSISTEN</th>
                             <th id="sql">SQL TEXT</th>
                         </tr>
                     </thead>
@@ -320,7 +320,6 @@ if ($updateRealTimeData) {
                 }
             }
         });
-        setInterval(bufferUsageChart, 10000);
     </script>
 </body>
 
