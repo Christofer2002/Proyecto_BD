@@ -78,11 +78,14 @@ while(1){
 
         //Se extrae el dato de la peticion del tamaño
         $bufferSize = oci_fetch_assoc($stmtS);
-        
+    
         //Se calcula el espacio usado del buffer
         foreach($bufferData as $dato){
-            $bufferUsed = $bufferUsed + intval($dato['PERSISTENT_MEM']);
+            $bufferUsed = $bufferUsed + $dato['PERSISTENT_MEM'];
         }
+        echo var_dump($bufferUsed);
+        echo var_dump($bufferData);
+        sleep(200);
         // -----------------------------------------------------
     ?>
     <div class="Datos_buffer">

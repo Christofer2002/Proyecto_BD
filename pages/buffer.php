@@ -19,7 +19,7 @@ function getRealTimeData()
 
     // Peticiones para extraer los contenidos del buffer en tiempo real
     $table_bufferData_name = 'v$sqlarea';
-    $query_bufferData = "SELECT distinct vs.sql_text, vs.persistent_mem, to_char(to_date(vs.first_load_time,'YYYY-MM-DD/HH24:MI:SS'),'MM/DD HH24:MI:SS') first_load_time,
+    $query_bufferData = "SELECT distinct vs.sql_text, vs.persistent_mem, to_char(to_date(vs.first_load_time,'YYYY-MM-DD/HH24:MI:SS'),'DD/MM/YYYY HH24:MI:SS') first_load_time,
     vs.parsing_user_id , au.USERNAME parseuser
     FROM $table_bufferData_name vs , all_users au
     WHERE (parsing_user_id != 0)
@@ -85,7 +85,7 @@ if ($updateRealTimeData) {
     }
 
     $table_bufferData_name = 'v$sqlarea';
-    $query_bufferData = "SELECT distinct vs.sql_text, vs.persistent_mem, to_char(to_date(vs.first_load_time,'YYYY-MM-DD/HH24:MI:SS'),'MM/DD HH24:MI:SS') first_load_time,
+    $query_bufferData = "SELECT distinct vs.sql_text, vs.persistent_mem, to_char(to_date(vs.first_load_time,'YYYY-MM-DD/HH24:MI:SS'),'DD/MM/YYYY HH24:MI:SS') first_load_time,
     vs.parsing_user_id , au.USERNAME parseuser
     FROM $table_bufferData_name vs , all_users au
     WHERE (parsing_user_id != 0)
@@ -175,8 +175,8 @@ if ($updateRealTimeData) {
                             if ($sqlTextExists) {
                         ?>
                                 <tr>
-                                    <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 0, 5) : '' ?></td>
-                                    <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 6) : '' ?></td>
+                                    <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 0, 10) : '' ?></td>
+                                    <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 11) : '' ?></td>
                                     <td><?php echo $bufferSize['BYTES'] ?></td>
                                     <td><?php echo $bufferUsed ?></td>
                                     <td><?php echo isset($datosB['PARSEUSER']) ? $datosB['PARSEUSER'] : '' ?></td>
