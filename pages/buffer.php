@@ -190,11 +190,11 @@ if ($updateRealTimeData) {
                     </tbody>
                 </table>
             </div>
-            <div class="chart-container">
-                <canvas id="sharedSqlChart"></canvas>
-            </div>
         </div>
-
+        <div class="chart-container">
+            <!-- <div id="bufferSizeLabel"><?php echo round($bufferSize['BYTES'] / 1024 / 1024); ?> MB</div> -->
+            <canvas id="bufferUsageChart"></canvas>
+        </div>
     </main>
 
     <script>
@@ -207,7 +207,6 @@ if ($updateRealTimeData) {
                 if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
                     // Guardar la posición actual del scroll
                     var currentScrollTop = realTimeData.scrollTop;
-                    console.log(currentScrollTop);
                     realTimeDataContainer.innerHTML = xhr.responseText;
                     // Restaurar la posición del scroll después de que se haya actualizado el contenido
                     document.getElementById("scrollable-table").scrollTop = currentScrollTop;
@@ -221,6 +220,107 @@ if ($updateRealTimeData) {
 
         // Actualizar cada 10 segundos
         setInterval(updateRealTimeData, 10000);
+
+
+        // Obtener el tamaño del búfer en megabytes
+        const bufferSizeInMB = <?php echo $bufferSize['BYTES']; ?> / 1024 / 1024;
+
+
+        // Función para procesar los datos y obtener el tamaño total por usuario
+        function processDataForGraph(data) {
+            var users = {};
+
+            for (var i = 0; i < data.length; i++) {
+                var parseUser = data[i].PARSEUSER;
+                var persistentMem = parseInt(data[i].PERSISTENT_MEM);
+
+                if (parseUser && persistentMem) {
+                    if (!users[parseUser]) {
+                        users[parseUser] = {
+                            size: 0,
+                            used: persistentMem
+                        };
+                    }
+                    users[parseUser].size += persistentMem;
+                }
+            }
+
+            var userLabels = [];
+            var userSizes = [];
+            var userUseds = [];
+            for (var user in users) {
+                userLabels.push(user);
+                console.log(users[user].size);
+                userSizes.push(users[user].size / 1024 / 1024); // Convertir a megabytes
+                userUseds.push(users[user].used / 1024 / 1024); // Convertir a megabytes
+            }
+
+            return {
+                labels: userLabels,
+                sizes: userSizes,
+                useds: userUseds
+            };
+        }
+
+        // Obtener los datos procesados para la gráfica
+        var processedData = processDataForGraph(<?php echo json_encode($dataToUse); ?>);
+
+        console.log(processedData);
+
+        // Configurar la gráfica de uso del búfer
+        var bufferUsageChart = new Chart(document.getElementById("bufferUsageChart"), {
+            type: "line", // Cambiar a tipo "line"
+            data: {
+                labels: processedData.labels,
+                datasets: [{
+                    label: "Buffer Usage",
+                    data: processedData.sizes,
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 2,
+                    pointBackgroundColor: "rgba(75, 192, 192, 1)",
+                    fill: false
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: `Buffer Size ${bufferSizeInMB} (MB)`
+                        },
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return value + ' MB';
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Parse User"
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var username = context.label;
+                                var size = context.parsed.y;
+                                var used = processedData.useds[context.dataIndex]; // Obtener el valor de uso correspondiente
+
+                                return "User: " + username + " | Size: " + size.toFixed(2) + " MB" + " | Used: " + used.toFixed(2) + " MB";
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        setInterval(bufferUsageChart, 10000);
     </script>
 </body>
 
