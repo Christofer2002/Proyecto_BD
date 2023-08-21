@@ -144,7 +144,7 @@ if ($updateRealTimeData) {
     </div>
     <main class="main">
         <div id="real-time-data-container" class="table-graphic">
-            <div class="scrollable-table">
+            <div id="scrollable-table" class="scrollable-table">
                 <table>
                     <thead>
                         <tr>
@@ -194,19 +194,23 @@ if ($updateRealTimeData) {
                 <canvas id="sharedSqlChart"></canvas>
             </div>
         </div>
-        
+
     </main>
 
     <script>
         function updateRealTimeData() {
-            var realTimeDataContainer = document.getElementById(
-                "real-time-data-container"
-            );
+            var realTimeDataContainer = document.getElementById("real-time-data-container");
+            var realTimeData = document.getElementById("scrollable-table");
             var xhr = new XMLHttpRequest();
             xhr.open("GET", "buffer.php?update=true", true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    // Guardar la posición actual del scroll
+                    var currentScrollTop = realTimeData.scrollTop;
+                    console.log(currentScrollTop);
                     realTimeDataContainer.innerHTML = xhr.responseText;
+                    // Restaurar la posición del scroll después de que se haya actualizado el contenido
+                    document.getElementById("scrollable-table").scrollTop = currentScrollTop;
                 }
             };
             xhr.send();
