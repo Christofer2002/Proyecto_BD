@@ -153,7 +153,7 @@ if ($updateRealTimeData) {
                             <th>SIZE</th>
                             <th>USED</th>
                             <th>PROCESS ID</th>
-                            <th>MEM PERSISTEN</th>
+                            <th>PERSISTENT MEM</th>
                             <th id="sql">SQL TEXT</th>
                         </tr>
                     </thead>
