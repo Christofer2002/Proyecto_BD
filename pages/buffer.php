@@ -54,6 +54,7 @@ function getRealTimeData()
         echo 'Error en la consulta: ' . oci_error($stmtd);
     }
 
+
     foreach ($bufferData as $dato) {
         $bufferUsed = $bufferUsed + intval($dato['PERSISTENT_MEM']);
     }
@@ -123,6 +124,36 @@ if ($updateRealTimeData) {
     foreach ($bufferData as $dato) {
         $bufferUsed = $bufferUsed + intval($dato['PERSISTENT_MEM']);
     }
+}
+
+$hwm = 0.8; // Porcentaje del HWM (80%)
+
+// Convertir el tamaño del caché a megabytes
+$bufferSizeInMB = $bufferSize['BYTES'] / 1024 / 1024;
+
+
+if ($bufferUsed / $bufferSizeInMB > $hwm) {
+    $bufferUsedInMB = $bufferUsed / 1024 / 1024;
+
+    // Calcular el porcentaje en relación al tamaño del caché en megabytes
+    $usagePercentage = ($bufferUsedInMB / $bufferSizeInMB) * 100;
+
+    // Obtener la fecha y hora actual
+    $timestamp = date('Y-m-d H:i:s');
+
+    // Obtener el proceso y usuario
+    $process = ""; //Por arreglar;
+    $user = ""; // Por arreglar
+
+    // Obtener el detalle de SQL
+    $sqlDetail = ""; // Por arreglar
+
+    // Crear el mensaje de alerta
+    $alertMessage = "High Water Mark (HWM) exceeded. Buffer Usage: " . $usagePercentage . "%";
+    $logMessage = "$timestamp - Process: , User: $user, SQL Detail: $sqlDetail - $alertMessage\n";
+
+    // Registrar la alerta en el CBLog
+    file_put_contents('../CBLog.log', $logMessage, FILE_APPEND);
 }
 ?>
 
