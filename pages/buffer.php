@@ -208,8 +208,8 @@ if ($bufferUsed / $bufferSizeInMB > $hwm) {
                                 <tr>
                                     <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 0, 10) : '' ?></td>
                                     <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 11) : '' ?></td>
-                                    <td><?php echo $bufferSize['BYTES'] ?></td>
-                                    <td><?php echo $bufferUsed ?></td>
+                                    <td><?php echo $bufferSize['BYTES'] ?></td> <!--ARREGLAR-->
+                                    <td><?php echo $bufferUsed ?></td> <!--ARREGLAR-->
                                     <td><?php echo isset($datosB['PARSEUSER']) ? $datosB['PARSEUSER'] : '' ?></td>
                                     <td><?php echo isset($datosB['PERSISTENT_MEM']) ? $datosB['PERSISTENT_MEM'] : '' ?></td>
                                     <td><?php echo isset($datosB['SQL_TEXT']) ? $datosB['SQL_TEXT'] : '' ?></td>
@@ -261,18 +261,24 @@ if ($bufferUsed / $bufferSizeInMB > $hwm) {
         function processDataForGraph(data) {
             var users = {};
 
+            //ARREGLAR
+            let bufferUsedArray = <?php echo json_encode($bufferUsed); ?>;
+
+            console.log(bufferUsedArray);
+
             for (var i = 0; i < data.length; i++) {
                 var parseUser = data[i].PARSEUSER;
-                var persistentMem = parseInt(data[i].PERSISTENT_MEM);
-
-                if (parseUser && persistentMem) {
+                //ARREGLAR
+                var dataUsed = bufferUsedArray;
+                console.log(dataUsed);
+                if (parseUser && dataUsed) {
                     if (!users[parseUser]) {
                         users[parseUser] = {
                             size: 0,
-                            used: persistentMem
+                            used: dataUsed
                         };
                     }
-                    users[parseUser].size += persistentMem;
+                    users[parseUser].size += dataUsed;
                 }
             }
 
@@ -295,8 +301,6 @@ if ($bufferUsed / $bufferSizeInMB > $hwm) {
 
         // Obtener los datos procesados para la gráfica
         var processedData = processDataForGraph(<?php echo json_encode($dataToUse); ?>);
-
-        console.log(processedData);
 
         // Configurar la gráfica de uso del búfer
         var bufferUsageChart = new Chart(document.getElementById("bufferUsageChart"), {
