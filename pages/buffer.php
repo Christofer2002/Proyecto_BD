@@ -3,7 +3,6 @@
 require_once '../config/config.php';
 
 // Función para obtener datos actualizados y alertas según el HWM
-// Función para obtener datos actualizados y alertas según el HWM
 function getRealTimeData()
 {
     $realTimeData = array();
@@ -28,19 +27,29 @@ function getRealTimeData()
     $stmtd = oci_parse($conn, $query_bufferData);
     oci_execute($stmtd);
 
-    $table_bufferSizw_name = 'V$SGAINFO';
-    $query_bufferSize = "SELECT bytes 
-        FROM $table_bufferSizw_name
+    //Extraer el tamaño del buffer
+    $table_bufferSize_name = 'V$SGAINFO';
+    $query_bufferSize = "SELECT ((bytes/1000)/1000) AS megabytes 
+        FROM $table_bufferSize_name
         WHERE name = 'Buffer Cache Size'";
     $stmtS = oci_parse($conn, $query_bufferSize);
     oci_execute($stmtS);
+
+    //Extraer el usado del buffer
+    $table_bufferUsed_name = 'V$Bh';
+    $query_bufferUsed = "SELECT (((COUNT(*) * 8192)/1000)/1000)  AS megabytes 
+        FROM $table_bufferUsed_name
+        WHERE status = 'xcur' OR status = 'cr' OR status = 'read'";
+    $stmtU = oci_parse($conn, $query_bufferUsed);
+    oci_execute($stmtU);
+
 
     // Se cierra la conexión con la base de datos
     oci_close($conn);
 
     $bufferData = array();
     $bufferSize = oci_fetch_assoc($stmtS);
-    $bufferUsed = 0;
+    $bufferUsed = oci_fetch_assoc($stmtU);
 
     if ($stmtd) {
         while ($row = oci_fetch_assoc($stmtd)) {
@@ -52,11 +61,6 @@ function getRealTimeData()
         }
     } else {
         echo 'Error en la consulta: ' . oci_error($stmtd);
-    }
-
-
-    foreach ($bufferData as $dato) {
-        $bufferUsed = $bufferUsed + intval($dato['PERSISTENT_MEM']);
     }
 
     // Almacena los datos en el array $realTimeData
@@ -78,7 +82,6 @@ if ($updateRealTimeData) {
     $bufferUsed = $realTimeData['bufferUsed'];
 } else {
     $conn = oci_connect(DB_USER, DB_PASS, DB_HOST . '/' . DB_NAME);
-
     // Verifica si hubo algún error en la conexión
     if (!$conn) {
         $e = oci_error();
@@ -95,19 +98,27 @@ if ($updateRealTimeData) {
     $stmtd = oci_parse($conn, $query_bufferData);
     oci_execute($stmtd);
 
-    $table_bufferSizw_name = 'V$SGAINFO';
-    $query_bufferSize = "SELECT bytes 
-    FROM $table_bufferSizw_name
+    $table_bufferSize_name = 'V$SGAINFO';
+    $query_bufferSize = "SELECT ((bytes/1000)/1000) AS megabytes
+    FROM $table_bufferSize_name
     WHERE name = 'Buffer Cache Size'";
     $stmtS = oci_parse($conn, $query_bufferSize);
     oci_execute($stmtS);
+
+    //Extraer el usado del buffer
+    $table_bufferUsed_name = 'V$Bh';
+    $query_bufferUsed = "SELECT (((COUNT(*) * 8192)/1000)/1000)  AS megabytes 
+        FROM $table_bufferUsed_name
+        WHERE status = 'xcur' OR status = 'cr' OR status = 'read'";
+    $stmtU = oci_parse($conn, $query_bufferUsed);
+    oci_execute($stmtU);
 
     // Se cierra la conexión con la base de datos
     oci_close($conn);
 
     $bufferData = array();
     $bufferSize = oci_fetch_assoc($stmtS);
-    $bufferUsed = 0;
+    $bufferUsed = oci_fetch_assoc($stmtU);;
 
     if ($stmtd) {
         while ($row = oci_fetch_assoc($stmtd)) {
@@ -120,21 +131,13 @@ if ($updateRealTimeData) {
     } else {
         $message = 'Error en la consulta: ' . oci_error($stmtd);
     }
-
-    foreach ($bufferData as $dato) {
-        $bufferUsed = $bufferUsed + intval($dato['PERSISTENT_MEM']);
-    }
 }
 
-$hwm = 0.8; // Porcentaje del HWM (80%)
+$hwm = 0.85; // Porcentaje del HWM 85%
 
-// Convertir el tamaño del caché a megabytes
-$bufferSizeInMB = $bufferSize['BYTES'] / 1024 / 1024;
-
-
-if ($bufferUsed / $bufferSizeInMB > $hwm) {
-    $bufferUsedInMB = $bufferUsed / 1024 / 1024;
-
+if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {   
+    $flagHWM = True;
+    /*
     // Calcular el porcentaje en relación al tamaño del caché en megabytes
     $usagePercentage = ($bufferUsedInMB / $bufferSizeInMB) * 100;
 
@@ -153,8 +156,9 @@ if ($bufferUsed / $bufferSizeInMB > $hwm) {
     $logMessage = "$timestamp - Process: , User: $user, SQL Detail: $sqlDetail - $alertMessage\n";
 
     // Registrar la alerta en el CBLog
-    file_put_contents('../CBLog.log', $logMessage, FILE_APPEND);
-}
+    file_put_contents('../CBLog.log', $logMessage, FILE_APPEND);*/
+}else{$flagHWM = False;}
+
 ?>
 
 <!DOCTYPE html>
@@ -181,43 +185,56 @@ if ($bufferUsed / $bufferSizeInMB > $hwm) {
                         <tr>
                             <th>DAY</th>
                             <th>TIME</th>
-                            <th>SIZE</th>
-                            <th>USED</th>
+                            <th>SIZE (MB)</th>
+                            <th>USED (MB)</th>
                             <th>PROCESS ID</th>
-                            <th>PERSISTENT MEM</th>
+                            <th>PERSISTENT MEM (BYTES)</th>
                             <th id="sql">SQL TEXT</th>
                         </tr>
                     </thead>
-                    <tbody class="">
+                    <tbody class="" id="TablaBuffer">
                         <?php
-                        $dataToUse = $updateRealTimeData ? $realTimeData['bufferData'] : $bufferData;
-
-                        foreach ($dataToUse as $datosB) {
-                            $sqlTextExists = false;
-                            if ($updateRealTimeData) {
-                                foreach ($realTimeData['bufferData'] as $realTimeDatum) {
-                                    if ($realTimeDatum['SQL_TEXT'] === $datosB['SQL_TEXT']) {
-                                        $sqlTextExists = true;
-                                        break;
+                        if($flagHWM){
+                            date_default_timezone_set("America/Costa_Rica");
+                            $fecha_actual = date("d/m/Y G:i:s");    
+                            $dataToUse = $updateRealTimeData ? $realTimeData['bufferData'] : $bufferData;
+    
+                            foreach ($dataToUse as $datosB) {
+                                $sqlTextExists = false;
+                                if ($updateRealTimeData) {
+                                    foreach ($realTimeData['bufferData'] as $realTimeDatum) {
+                                        if ($realTimeDatum['SQL_TEXT'] === $datosB['SQL_TEXT']) {
+                                            $sqlTextExists = true;
+                                            break;
+                                        }
                                     }
                                 }
+    
+                                if ($sqlTextExists) {
+                                    $fechaBuffer = DateTime::createFromFormat("d/m/Y H:i:s", $datosB['FIRST_LOAD_TIME']);
+                                    //if($dataToUse <= $fecha_actual){
+                            ?>
+                                    <tr>
+                                        <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 0, 10) : '' ?></td>
+                                        <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 11) : '' ?></td>
+                                        <td><?php echo (float)$bufferSize['MEGABYTES'] ?></td>
+                                        <td><?php echo (float)$bufferUsed['MEGABYTES'] ?></td>
+                                        <td><?php echo isset($datosB['PARSEUSER']) ? $datosB['PARSEUSER'] : '' ?></td>
+                                        <td><?php echo isset($datosB['PERSISTENT_MEM']) ? $datosB['PERSISTENT_MEM'] : '' ?></td>
+                                        <td><?php echo isset($datosB['SQL_TEXT']) ? $datosB['SQL_TEXT'] : '' ?></td>
+                                    </tr>
+                            <?php
+                                    //}
+                                }
                             }
-
-                            if ($sqlTextExists) {
-                        ?>
-                                <tr>
-                                    <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 0, 10) : '' ?></td>
-                                    <td><?php echo isset($datosB['FIRST_LOAD_TIME']) ? substr($datosB['FIRST_LOAD_TIME'], 11) : '' ?></td>
-                                    <td><?php echo $bufferSize['BYTES'] ?></td> <!--ARREGLAR-->
-                                    <td><?php echo $bufferUsed ?></td> <!--ARREGLAR-->
-                                    <td><?php echo isset($datosB['PARSEUSER']) ? $datosB['PARSEUSER'] : '' ?></td>
-                                    <td><?php echo isset($datosB['PERSISTENT_MEM']) ? $datosB['PERSISTENT_MEM'] : '' ?></td>
-                                    <td><?php echo isset($datosB['SQL_TEXT']) ? $datosB['SQL_TEXT'] : '' ?></td>
-                                </tr>
+                            ?>
                         <?php
-                            }
-                        }
+                        }else{
                         ?>
+                        <tr>
+                            <td COLSPAN="7"> NO HAY HWM </td>
+                        </td>
+                        <?php }?>
                     </tbody>
                 </table>
             </div>
@@ -241,6 +258,9 @@ if ($bufferUsed / $bufferSizeInMB > $hwm) {
                     realTimeDataContainer.innerHTML = xhr.responseText;
                     // Restaurar la posición del scroll después de que se haya actualizado el contenido
                     document.getElementById("scrollable-table").scrollTop = currentScrollTop;
+
+                    // Actualizar el gráfico después de actualizar los datos
+                    updateBufferUsageChart();
                 }
             };
             xhr.send();
@@ -252,109 +272,89 @@ if ($bufferUsed / $bufferSizeInMB > $hwm) {
         // Actualizar cada 10 segundos
         setInterval(updateRealTimeData, 10000);
 
+        //Parte del grafico
+        var bufferUsageChart
 
-        // Obtener el tamaño del búfer en megabytes
-        const bufferSizeInMB = <?php echo $bufferSize['BYTES']; ?> / 1024 / 1024;
-
-
-        // Función para procesar los datos y obtener el tamaño total por usuario
-        function processDataForGraph(data) {
-            var users = {};
-
-            //ARREGLAR
-            let bufferUsedArray = <?php echo json_encode($bufferUsed); ?>;
-
-            console.log(bufferUsedArray);
-
-            for (var i = 0; i < data.length; i++) {
-                var parseUser = data[i].PARSEUSER;
-                //ARREGLAR
-                var dataUsed = bufferUsedArray;
-                console.log(dataUsed);
-                if (parseUser && dataUsed) {
-                    if (!users[parseUser]) {
-                        users[parseUser] = {
-                            size: 0,
-                            used: dataUsed
-                        };
-                    }
-                    users[parseUser].size += dataUsed;
-                }
+        // Función para actualizar el gráfico de uso del búfer
+        function updateBufferUsageChart(){
+            if (bufferUsageChart) {
+                bufferUsageChart.destroy(); // Destruir el gráfico existente antes de crear uno nuevo
             }
 
-            var userLabels = [];
-            var userSizes = [];
-            var userUseds = [];
-            for (var user in users) {
-                userLabels.push(user);
-                console.log(users[user].size);
-                userSizes.push(users[user].size / 1024 / 1024); // Convertir a megabytes
-                userUseds.push(users[user].used / 1024 / 1024); // Convertir a megabytes
-            }
-
-            return {
-                labels: userLabels,
-                sizes: userSizes,
-                useds: userUseds
-            };
-        }
-
-        // Obtener los datos procesados para la gráfica
-        var processedData = processDataForGraph(<?php echo json_encode($dataToUse); ?>);
-
-        // Configurar la gráfica de uso del búfer
-        var bufferUsageChart = new Chart(document.getElementById("bufferUsageChart"), {
-            type: "line", // Cambiar a tipo "line"
-            data: {
-                labels: processedData.labels,
-                datasets: [{
-                    label: "Buffer Usage",
-                    data: processedData.sizes,
-                    borderColor: "rgba(75, 192, 192, 1)",
-                    borderWidth: 2,
-                    pointBackgroundColor: "rgba(75, 192, 192, 1)",
-                    fill: false
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: `Buffer Size ${bufferSizeInMB} (MB)`
-                        },
-                        ticks: {
-                            callback: function(value, index, values) {
-                                return value + ' MB';
+            // Configurar la gráfica de uso del búfer
+            bufferUsageChart = new Chart(document.getElementById("bufferUsageChart"), {
+                type: "bar",
+                data: {
+                    labels: ['Database Buffer Cache'],
+                    datasets: [{
+                        label: 'Database Buffer Used',
+                        data: [<?php echo (float)$bufferUsed['MEGABYTES']?>],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: <?php echo (float)$bufferSize['MEGABYTES']?>,
+                            title: {
+                                display: true,
+                                text: `Buffer Size <?php echo (float)$bufferSize['MEGABYTES']?> (MB)`
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    return value + ' MB';
+                                }
                             }
+                        },
+                        x: {
+                            drawTicks: false
                         }
                     },
-                    x: {
-                        title: {
-                            display: true,
-                            text: "Parse User"
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return  "Database Buffer Used: "+ [<?php echo (float)$bufferUsed['MEGABYTES']?>]+ " MB";
+                                }
+                            }
                         }
                     }
                 },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                var username = context.label;
-                                var size = context.parsed.y;
-                                var used = processedData.useds[context.dataIndex]; // Obtener el valor de uso correspondiente
+                plugins: [{
+                    afterDraw: function(chart, args, options) {
+                        var ctx = chart.ctx;
+                        var xAxis = chart.scales.x;
+                        var yAxis = chart.scales.y;
+                        var yValue = yAxis.getPixelForValue(<?php echo (float)$bufferSize['MEGABYTES']*$hwm?>);
 
-                                return "User: " + username + " | Size: " + size.toFixed(2) + " MB" + " | Used: " + used.toFixed(2) + " MB";
-                            }
+                        // Dibujar la línea horizontal
+                        ctx.beginPath();
+                        ctx.moveTo(xAxis.left, yValue);
+                        ctx.lineTo(xAxis.right, yValue);
+                        ctx.strokeStyle = 'rgba(255, 0, 0, 0.8)';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+
+                        // Agregar un tooltip a la línea
+                        if (chart._active && chart._active[0]) {
+                            var tooltipLabel = "HWM: "+<?php echo (float)$bufferSize['MEGABYTES']*$hwm?>+" MB";
+                            var tooltipX = (xAxis.right - xAxis.left) / 2 + xAxis.left; // Posición X para el tooltip
+                            var tooltipY = yValue - 10; // Posición Y para el tooltip
+                            ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+                            ctx.font = '12px Arial';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(tooltipLabel, tooltipX, tooltipY);
                         }
                     }
-                }
-            }
-        });
+                }]
+            });
+        }
     </script>
 </body>
 
