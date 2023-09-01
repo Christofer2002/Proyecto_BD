@@ -288,7 +288,7 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                     labels: ['Database Buffer Cache'],
                     datasets: [{
                         label: 'Database Buffer Used',
-                        data: [<?php echo (float)$bufferUsed['MEGABYTES']?>],
+                        data: [<?php echo number_format((float)$bufferUsed['MEGABYTES'], 2, '.', ''); ?>],
                         backgroundColor: 'rgba(75, 192, 192, 0.6)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
@@ -298,10 +298,10 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: <?php echo (float)$bufferSize['MEGABYTES']?>,
+                            max: <?php echo number_format((float)$bufferSize['MEGABYTES'], 2, '.', ''); ?>,
                             title: {
                                 display: true,
-                                text: `Buffer Size <?php echo (float)$bufferSize['MEGABYTES']?> (MB)`
+                                text: `Buffer Size <?php echo number_format((float)$bufferSize['MEGABYTES'], 2, '.', ''); ?> (MB)`
                             },
                             ticks: {
                                 callback: function(value, index, values) {
@@ -320,7 +320,7 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return  "Database Buffer Used: "+ [<?php echo (float)$bufferUsed['MEGABYTES']?>]+ " MB";
+                                    return  "Database Buffer Used: "+ [<?php echo number_format((float)$bufferUsed['MEGABYTES'], 2, '.', ''); ?>]+ " MB";
                                 }
                             }
                         }
@@ -343,7 +343,7 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
 
                         // Agregar un tooltip a la línea
                         if (chart._active && chart._active[0]) {
-                            var tooltipLabel = "HWM: "+<?php echo (float)$bufferSize['MEGABYTES']*$hwm?>+" MB";
+                            var tooltipLabel = "HWM: "+<?php echo number_format((float)$bufferSize['MEGABYTES']*$hwm, 2, '.', ''); ?>+" MB";
                             var tooltipX = (xAxis.right - xAxis.left) / 2 + xAxis.left; // Posición X para el tooltip
                             var tooltipY = yValue - 10; // Posición Y para el tooltip
                             ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
