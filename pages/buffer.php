@@ -2,21 +2,10 @@
 // Incluir para usar los datos de la constante
 require_once '../config/config.php';
 
-// Función para obtener datos actualizados y alertas según el HWM
-function getRealTimeData()
-{
-    $realTimeData = array();
-
-    // Coloca aquí la lógica para obtener los datos actualizados
-    $conn = oci_connect(DB_USER, DB_PASS, DB_HOST . '/' . DB_NAME);
-
-    // Verifica si hubo algún error en la conexión
-    if (!$conn) {
-        $e = oci_error();
-        die('Error de conexión: ' . $e['message']);
-    }
-
-    // Peticiones para extraer los contenidos del buffer en tiempo real
+//-------- Prueba
+//Funcion para extrear los datos de los bloques dentro del buffer
+function  getBufferData($connector){
+    $bufferData = array();
     $table_bufferData_name = 'v$sqlarea';
     $query_bufferData = "SELECT distinct vs.sql_text, vs.persistent_mem, to_char(to_date(vs.first_load_time,'YYYY-MM-DD/HH24:MI:SS'),'DD/MM/YYYY HH24:MI:SS') first_load_time,
     vs.parsing_user_id , au.USERNAME parseuser
@@ -24,46 +13,52 @@ function getRealTimeData()
     WHERE (parsing_user_id != 0)
         AND (au.user_id(+)=vs.parsing_user_id)
         AND (executions >= 1)";
-    $stmtd = oci_parse($conn, $query_bufferData);
-    oci_execute($stmtd);
+    $stmtD = oci_parse($connector, $query_bufferData);
+    oci_execute($stmtD);
 
-    //Extraer el tamaño del buffer
+    //Extraemos los elementos del arreglo
+    if ($stmtD) {
+        while ($row = oci_fetch_assoc($stmtD)) {
+            $bufferData[] = $row;
+        }
+        if (empty($bufferData)) { echo 'No hay preguntas en la tabla.'; }
+    }else { echo 'Error en la consulta: ' . oci_error($stmtd); }
+
+    return $bufferData;
+}
+
+//Funcion para extraer el tamaño del buffer
+function getBufferSize($connector){
     $table_bufferSize_name = 'V$SGAINFO';
     $query_bufferSize = "SELECT ((bytes/1000)/1000) AS megabytes 
         FROM $table_bufferSize_name
         WHERE name = 'Buffer Cache Size'";
-    $stmtS = oci_parse($conn, $query_bufferSize);
+    $stmtS = oci_parse($connector, $query_bufferSize);
     oci_execute($stmtS);
+    $bufferSize = oci_fetch_assoc($stmtS);
+    return $bufferSize;
+}
 
-    //Extraer el usado del buffer
+//Funcion para extraer el usado del buffer
+function getBufferUsed($connector){
     $table_bufferUsed_name = 'V$Bh';
     $query_bufferUsed = "SELECT (((COUNT(*) * 8192)/1000)/1000)  AS megabytes 
         FROM $table_bufferUsed_name
         WHERE status = 'xcur' OR status = 'cr' OR status = 'read'";
-    $stmtU = oci_parse($conn, $query_bufferUsed);
+    $stmtU = oci_parse($connector, $query_bufferUsed);
     oci_execute($stmtU);
-
-
-    // Se cierra la conexión con la base de datos
-    oci_close($conn);
-
-    $bufferData = array();
-    $bufferSize = oci_fetch_assoc($stmtS);
     $bufferUsed = oci_fetch_assoc($stmtU);
+    return $bufferUsed;
+}
 
-    if ($stmtd) {
-        while ($row = oci_fetch_assoc($stmtd)) {
-            $bufferData[] = $row;
-        }
-        oci_free_statement($stmtd);
-        if (empty($bufferData)) {
-            echo 'No hay preguntas en la tabla.';
-        }
-    } else {
-        echo 'Error en la consulta: ' . oci_error($stmtd);
-    }
+//Funciona para obtener los datos en tiempo real
+function getRealTimeData($connector){
+    $realTimeData = array();
 
-    // Almacena los datos en el array $realTimeData
+    $bufferData = getBufferData($connector);
+    $bufferSize = getBufferSize($connector);
+    $bufferUsed = getBufferUsed($connector);
+
     $realTimeData['bufferData'] = $bufferData;
     $realTimeData['bufferSize'] = $bufferSize;
     $realTimeData['bufferUsed'] = $bufferUsed;
@@ -71,93 +66,34 @@ function getRealTimeData()
     return $realTimeData;
 }
 
+//Conectar con la base de datos
+$conn = oci_connect(DB_USER, DB_PASS, DB_HOST . '/' . DB_NAME);
+// Verifica si hubo algún error en la conexión
+if (!$conn) {
+    $e = oci_error();
+    die('Error de conexión: ' . $e['message']);
+}
 
 // Verificar si se debe actualizar los datos o mostrar el contenido estático
 $updateRealTimeData = isset($_GET['update']) && $_GET['update'] === 'true';
 
 if ($updateRealTimeData) {
-    $realTimeData = getRealTimeData();
+    $realTimeData = getRealTimeData($conn);
     $bufferData = $realTimeData['bufferData'];
     $bufferSize = $realTimeData['bufferSize'];
     $bufferUsed = $realTimeData['bufferUsed'];
 } else {
-    $conn = oci_connect(DB_USER, DB_PASS, DB_HOST . '/' . DB_NAME);
-    // Verifica si hubo algún error en la conexión
-    if (!$conn) {
-        $e = oci_error();
-        die('Error de conexión: ' . $e['message']);
-    }
-
-    $table_bufferData_name = 'v$sqlarea';
-    $query_bufferData = "SELECT distinct vs.sql_text, vs.persistent_mem, to_char(to_date(vs.first_load_time,'YYYY-MM-DD/HH24:MI:SS'),'DD/MM/YYYY HH24:MI:SS') first_load_time,
-    vs.parsing_user_id , au.USERNAME parseuser
-    FROM $table_bufferData_name vs , all_users au
-    WHERE (parsing_user_id != 0)
-        AND (au.user_id(+)=vs.parsing_user_id)
-        AND (executions >= 1)";
-    $stmtd = oci_parse($conn, $query_bufferData);
-    oci_execute($stmtd);
-
-    $table_bufferSize_name = 'V$SGAINFO';
-    $query_bufferSize = "SELECT ((bytes/1000)/1000) AS megabytes
-    FROM $table_bufferSize_name
-    WHERE name = 'Buffer Cache Size'";
-    $stmtS = oci_parse($conn, $query_bufferSize);
-    oci_execute($stmtS);
-
-    //Extraer el usado del buffer
-    $table_bufferUsed_name = 'V$Bh';
-    $query_bufferUsed = "SELECT (((COUNT(*) * 8192)/1000)/1000)  AS megabytes 
-        FROM $table_bufferUsed_name
-        WHERE status = 'xcur' OR status = 'cr' OR status = 'read'";
-    $stmtU = oci_parse($conn, $query_bufferUsed);
-    oci_execute($stmtU);
-
-    // Se cierra la conexión con la base de datos
-    oci_close($conn);
-
-    $bufferData = array();
-    $bufferSize = oci_fetch_assoc($stmtS);
-    $bufferUsed = oci_fetch_assoc($stmtU);;
-
-    if ($stmtd) {
-        while ($row = oci_fetch_assoc($stmtd)) {
-            $bufferData[] = $row;
-        }
-        oci_free_statement($stmtd);
-        if (empty($bufferData)) {
-            $message = 'No hay preguntas en la tabla.';
-        }
-    } else {
-        $message = 'Error en la consulta: ' . oci_error($stmtd);
-    }
+    $bufferData = getBufferData($conn);
+    $bufferSize = getBufferSize($conn);
+    $bufferUsed = getBufferUsed($conn); 
 }
 
-$hwm = 0.85; // Porcentaje del HWM 85%
+oci_close($conn);
 
-if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {   
-    $flagHWM = True;
-    /*
-    // Calcular el porcentaje en relación al tamaño del caché en megabytes
-    $usagePercentage = ($bufferUsedInMB / $bufferSizeInMB) * 100;
+$hwm = 0.80; // Porcentaje del HWM 85%
+$flagHWM = ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES'] * $hwm);
 
-    // Obtener la fecha y hora actual
-    $timestamp = date('Y-m-d H:i:s');
-
-    // Obtener el proceso y usuario
-    $process = ""; //Por arreglar;
-    $user = ""; // Por arreglar
-
-    // Obtener el detalle de SQL
-    $sqlDetail = ""; // Por arreglar
-
-    // Crear el mensaje de alerta
-    $alertMessage = "High Water Mark (HWM) exceeded. Buffer Usage: " . $usagePercentage . "%";
-    $logMessage = "$timestamp - Process: , User: $user, SQL Detail: $sqlDetail - $alertMessage\n";
-
-    // Registrar la alerta en el CBLog
-    file_put_contents('../CBLog.log', $logMessage, FILE_APPEND);*/
-}else{$flagHWM = False;}
+//---------Prueba-----
 
 ?>
 
@@ -192,7 +128,7 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                             <th id="sql">SQL TEXT</th>
                         </tr>
                     </thead>
-                    <tbody class="" id="TablaBuffer">
+                    <tbody id="TablaBuffer">
                         <?php
                         if($flagHWM){
                             date_default_timezone_set("America/Costa_Rica");
@@ -241,56 +177,27 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
         </div>
         <div class="chart-container">
             <!-- <div id="bufferSizeLabel"><?php echo round($bufferSize['BYTES'] / 1024 / 1024); ?> MB</div> -->
-            <canvas id="bufferUsageChart"></canvas>
+            <canvas id="bufferUsageChart"> </canvas>
         </div>
     </main>
 
     <script>
-        function updateRealTimeData() {
-            var realTimeDataContainer = document.getElementById("real-time-data-container");
-            var realTimeData = document.getElementById("scrollable-table");
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", "buffer.php?update=true", true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
-                    // Guardar la posición actual del scroll
-                    var currentScrollTop = realTimeData.scrollTop;
-                    realTimeDataContainer.innerHTML = xhr.responseText;
-                    // Restaurar la posición del scroll después de que se haya actualizado el contenido
-                    document.getElementById("scrollable-table").scrollTop = currentScrollTop;
+        var bufferUsageChart;
 
-                    // Actualizar el gráfico después de actualizar los datos
-                    updateBufferUsageChart();
-                }
-            };
-            xhr.send();
-        }
-
-        // Llamar a la función de actualización al cargar la página por primera vez
-        updateRealTimeData();
-
-        // Actualizar cada 10 segundos
-        setInterval(updateRealTimeData, 10000);
-
-        //Parte del grafico
-        var bufferUsageChart
-
-        // Función para actualizar el gráfico de uso del búfer
-        function updateBufferUsageChart(){
+        function updateBufferUsageChart(bufferSize, bufferUsed, hwm) {
             if (bufferUsageChart) {
-                bufferUsageChart.destroy(); // Destruir el gráfico existente antes de crear uno nuevo
+                bufferUsageChart.destroy();
             }
 
-            // Configurar la gráfica de uso del búfer
             bufferUsageChart = new Chart(document.getElementById("bufferUsageChart"), {
                 type: "bar",
                 data: {
                     labels: ['Database Buffer Cache'],
                     datasets: [{
                         label: 'Database Buffer Used',
-                        data: [<?php echo (float)$bufferUsed['MEGABYTES']?>],
-                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
+                        data: [parseInt(bufferUsed)],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
                         borderWidth: 1
                     }]
                 },
@@ -298,10 +205,10 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: <?php echo (float)$bufferSize['MEGABYTES']?>,
+                            max: parseInt(bufferSize),
                             title: {
                                 display: true,
-                                text: `Buffer Size <?php echo (float)$bufferSize['MEGABYTES']?> (MB)`
+                                text: "Buffer Size "+parseInt(bufferSize)+" (MB)"
                             },
                             ticks: {
                                 callback: function(value, index, values) {
@@ -320,7 +227,7 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return  "Database Buffer Used: "+ [<?php echo (float)$bufferUsed['MEGABYTES']?>]+ " MB";
+                                    return  "Database Buffer Used: "+ parseInt(bufferUsed) + " MB";
                                 }
                             }
                         }
@@ -331,7 +238,7 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                         var ctx = chart.ctx;
                         var xAxis = chart.scales.x;
                         var yAxis = chart.scales.y;
-                        var yValue = yAxis.getPixelForValue(<?php echo (float)$bufferSize['MEGABYTES']*$hwm?>);
+                        var yValue = yAxis.getPixelForValue(parseInt(bufferSize) * parseFloat(hwm));
 
                         // Dibujar la línea horizontal
                         ctx.beginPath();
@@ -343,7 +250,7 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
 
                         // Agregar un tooltip a la línea
                         if (chart._active && chart._active[0]) {
-                            var tooltipLabel = "HWM: "+<?php echo (float)$bufferSize['MEGABYTES']*$hwm?>+" MB";
+                            var tooltipLabel = "HWM: "+ parseInt(parseInt(bufferSize) * parseFloat(hwm))+" MB";
                             var tooltipX = (xAxis.right - xAxis.left) / 2 + xAxis.left; // Posición X para el tooltip
                             var tooltipY = yValue - 10; // Posición Y para el tooltip
                             ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
@@ -355,7 +262,37 @@ if ( ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES']*$hwm)) {
                 }]
             });
         }
+
+        function updateRealTimeData() {
+            var realTimeDataContainer = document.getElementById("real-time-data-container");
+            var realTimeData = document.getElementById("scrollable-table");
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "buffer.php?update=true", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                    var currentScrollTop = realTimeData.scrollTop;
+                    var newContent = xhr.responseText;
+                    realTimeDataContainer.innerHTML = newContent;
+
+                    var bufferSize = document.querySelector("#bufferSize").value;
+                    var bufferUsed = document.querySelector("#bufferUsed").value;
+                    var hwm = document.querySelector("#hwm").value;
+
+                    updateBufferUsageChart(bufferSize, bufferUsed, hwm);
+
+                    document.getElementById("scrollable-table").scrollTop = currentScrollTop;
+                }
+            };
+            xhr.send();
+        }
+
+        updateRealTimeData();
+        // Actualizar cada 10 segundos
+        setInterval(updateRealTimeData, 10000);
     </script>
+    <input type="hidden" id="bufferSize" value=<?php echo $bufferSize['MEGABYTES']?>>
+    <input type="hidden" id="bufferUsed" value=<?php echo $bufferUsed['MEGABYTES']?>>
+    <input type="hidden" id="hwm" value=<?php echo $hwm?>>
 </body>
 
 </html>

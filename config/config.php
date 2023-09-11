@@ -1,8 +1,8 @@
 <?php
 
 define('DB_HOST', 'localhost'); // El host donde se encuentra tu servidor de Oracle
-define('DB_USER', 'u1'); // El nombre de usuario para acceder a la base de datos
-define('DB_PASS', 'u1'); // La contraseña del usuario
+define('DB_USER', 'SYSTEM'); // El nombre de usuario para acceder a la base de datos
+define('DB_PASS', 'root'); // La contraseña del usuario
 define('DB_NAME', 'xe'); // El nombre del servicio de Oracle que deseas utilizar
 
 // Intenta conectarte a la base de datos Oracle
