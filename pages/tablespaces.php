@@ -7,9 +7,9 @@ require_once '../config/config.php';
 //Funcion para extrear los datos de los bloques dentro del buffer
 function  getTablespaceData($connector){
     $tablespaceData = array();
-    $table_bufferData_name = 'v$temp_extent_pool';
+    $tablespacesData_name = 'v$temp_extent_pool';
 
-    $query_bufferData = "SELECT d.status \"Status\", d.tablespace_name \"Name\",
+    $query_tablespaceData = "SELECT d.status \"Status\", d.tablespace_name \"Name\",
                         TO_CHAR(NVL(a.bytes / 1024 / 1024, 0),'99,999,990.90') \"Size (MB)\",
                         TO_CHAR(NVL(a.bytes - NVL(f.bytes, 0), 0)/1024/1024,'99999999.99') \"Used (MB)\",
                         TO_CHAR(NVL(f.bytes / 1024 / 1024, 0),'99,999,990.90') \"Free (MB)\",
@@ -29,12 +29,12 @@ function  getTablespaceData($connector){
                 TO_CHAR(NVL(t.bytes / a.bytes * 100, 0), '990.00') \"(Used) %\"
         FROM sys.dba_tablespaces d,
             (select tablespace_name, sum(bytes) bytes from dba_temp_files group by tablespace_name) a,
-            (select tablespace_name, sum(bytes_cached) bytes from $table_bufferData_name group by tablespace_name) t
+            (select tablespace_name, sum(bytes_cached) bytes from $tablespacesData_name group by tablespace_name) t
         WHERE d.tablespace_name = a.tablespace_name(+) 
                 AND d.tablespace_name = t.tablespace_name(+) 
                 AND d.extent_management like 'LOCAL' AND d.contents like 'TEMPORARY'
                 AND d.tablespace_name NOT IN ('SYSTEM', 'SYSAUX', 'UNDOTBS1', 'USERS', 'TEMP')";
-    $stmTD = oci_parse($connector, $query_bufferData);
+    $stmTD = oci_parse($connector, $query_tablespaceData);
     oci_execute($stmTD);
 
     //Se extraen los elementos que se obtuvieron
@@ -47,6 +47,43 @@ function  getTablespaceData($connector){
     }else{ echo 'error en la consulta '. oci_error($stmTD); }
 
     return $tablespaceData;
+}
+
+//Funcion para extraer la saturacion
+function getSaturacion($tablespacesName){
+    //Aqui tenemos que abrir la conecccion obligatoriamente
+    $conn = oci_connect(DB_USER, DB_PASS, DB_HOST . '/' . DB_NAME);
+    // Verifica si hubo algún error en la conexión
+    if (!$conn) {
+        $e = oci_error();
+        die('Error de conexión: ' . $e['message']);
+    }
+
+    //Hacemos la peticion para encontrar el tamaño de registro del tablespaces
+    $query_tablespace_sizeR = "SELECT Sum(T.bytes + SUM(I.bytes)) AS TOTAL_SIZE
+        FROM
+            (SELECT segment_name AS table_name, bytes
+            FROM dba_segments
+            WHERE segment_type = 'TABLE'
+            AND tablespace_name = '$tablespacesName') T
+        JOIN
+            (SELECT i.index_name, i.table_name, s.bytes
+            FROM dba_indexes i
+            JOIN dba_segments s ON s.segment_name = i.index_name
+            WHERE s.segment_type IN ('INDEX', 'INDEX PARTITION', 'INDEX SUBPARTITION')) I
+        ON T.table_name = I.table_name
+        GROUP BY T.table_name, T.bytes";
+    $stmTZ = oci_parse($conn, $query_tablespace_sizeR);
+    oci_execute($stmTZ);
+    $tablespace_sizeR = oci_fetch_assoc($stmTZ);
+    
+    //Hacemos la peticion para encontrar el promedio de peticiones diarias de una tablespaces
+
+    
+    if(floatval($tablespace_sizeR['TOTAL_SIZE'])>0){
+        return floatval($tablespace_sizeR['TOTAL_SIZE']);
+    }
+    return "Tablespace sin uso";
 }
 
 //Conectar con la base de datos
@@ -83,6 +120,7 @@ $hwm = 0.80; // Porcentaje del HWM 85%
     <main class="main">
         <table>
             <thead>
+                <th>Tablespace</th>
                 <th>Grafico</th>
                 <th>Saturacion</th>
                 <th>Estatus</th>
@@ -92,12 +130,13 @@ $hwm = 0.80; // Porcentaje del HWM 85%
             <?php
                 foreach($tablespaceData as $datosT){?>
                     <tr>
+                        <td><?php echo $datosT['Name']?></td>
                         <td>
                             <div class="chart-container">
                                 <canvas id="bufferUsageChart<?php echo $datosT['Name']?>"></canvas>
                             </div>
                         </td>
-                        <td>****</td>
+                        <td><?php echo getSaturacion($datosT['Name'])?></td>
                         <td>
                             <div class= "semaforo" id="semaforo<?php echo $datosT['Name']?>" style="margin: 0">
                                 <div class="luz-roja"></div>
@@ -201,8 +240,9 @@ $hwm = 0.80; // Porcentaje del HWM 85%
 
     <!-- Script para renderizar los semaforos-->
     <script>
-        var semaforo = document.querySelector('#semaforo<?php echo $datosT['Name']?>');
-        <?php foreach($tablespaceData as $datosT){
+        <?php foreach($tablespaceData as $datosT){?>
+            var semaforo = document.querySelector('#semaforo<?php echo $datosT['Name']?>');
+            <?php
             if($datosT['Status']== 'ONLINE'){ ?>
                 semaforo.querySelector('.luz-roja').style.backgroundColor="gray";
             <?php }else {?>
