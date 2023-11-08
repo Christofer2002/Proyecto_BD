@@ -1,4 +1,12 @@
 <?php
+session_start(); // Inicia la sesión al comienzo del script
+
+// Si el usuario no está logueado, redirigir a login.php
+if (!isset($_SESSION['usuario_logueado']) || $_SESSION['usuario_logueado'] !== true) {
+  header('Location: ../login.php');
+  exit;
+}
+
 // Incluir para usar los datos de la constante
 require_once '../config/config.php';
 

@@ -66,10 +66,10 @@ $submenus = array(
     </div>
     <nav class="main-menu">
         <?php
-        if ($actual_url == ("/Proyecto_BD/index.php")) {
+        if ($actual_url == ("/Proyecto_BD/pages/inicio.php")) {
         ?>
             <div>
-                <a class="logo" href="/Proyecto_BD/index.php">
+                <a class="logo" href="/Proyecto_BD/pages/inicio.php">
                     <i class="fa-solid fa-database fa-lg"></i>
                     <span class="nav-text">Database Administrator</span>
                 </a>
@@ -81,15 +81,15 @@ $submenus = array(
         <div class="scrollbar" id="style-1">
             <ul>
                 <li>
-                    <a href="/Proyecto_BD/index.php">
+                    <a href="/Proyecto_BD/pages/inicio.php">
                         <i class="fa fa-home fa-lg"></i>
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="../pages/logout.php">
                         <i class="fa fa-user fa-lg"></i>
-                        <span class="nav-text">Login</span>
+                        <span class="nav-text">Logout</span>
                     </a>
                 </li>
                 <?php
