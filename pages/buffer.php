@@ -90,7 +90,7 @@ if ($updateRealTimeData) {
 
 oci_close($conn);
 
-$hwm = 0.80; // Porcentaje del HWM 85%
+$hwm = 0.10; // Porcentaje del HWM 85%
 $flagHWM = ((int)$bufferUsed['MEGABYTES']) >= ((int)$bufferSize['MEGABYTES'] * $hwm);
 
 //---------Prueba-----
