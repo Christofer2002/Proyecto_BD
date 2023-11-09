@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="text-center mb-4">
-                    <img src="logo.png" alt="Logo" class="mb-4" width="72" height="72">
+                    <img src="./assets/img/logo.jpg" alt="Logo" class="mb-2" width="200" height="200">
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -58,12 +58,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <form action="login.php" method="POST">
                             <div class="form-group">
                                 <label for="user">Usuarios</label>
-                                <select class="form-control" id="user" name="user">
-                                    <?php foreach ($usuarios_dblink as $username) { ?>
-                                        <option value="<?php echo htmlspecialchars($username); ?>">
-                                            <?php echo htmlspecialchars($username); ?>
-                                        </option>
-                                    <?php } ?>
+                                <select class="form-control" id="user" name="user" <?php echo empty($usuarios_dblink) ? 'disabled' : ''; ?>>
+                                    <?php if (empty($usuarios_dblink)) : ?>
+                                        <option>No hay Database Links configurados actualmente.</option>
+                                    <?php else : ?>
+                                        <?php foreach ($usuarios_dblink as $username) : ?>
+                                            <option value="<?php echo htmlspecialchars($username); ?>">
+                                                <?php echo htmlspecialchars($username); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Entrar</button>
